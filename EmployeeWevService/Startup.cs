@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using EmployeeWevService.Contexsts;
 using EmployeeWevService.Services;
 using Microsoft.AspNetCore.Builder;
@@ -34,6 +35,8 @@ namespace EmployeeWevService
                 options.UseSqlServer(
                     @"Server=(localdb)\mssqllocaldb;Database=EmployeesDB;Trusted_Connection=True;");
             });
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
         }

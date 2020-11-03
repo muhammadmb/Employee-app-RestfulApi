@@ -54,8 +54,10 @@ C:\Users\Blu-Ray\source\repos\EmployeeWevService\EmployeeWevService\bin\Debug\ne
 C:\Users\Blu-Ray\source\repos\EmployeeWevService\EmployeeWevService\bin\Debug\netcoreapp3.1\EmployeeWevService.dll
 C:\Users\Blu-Ray\source\repos\EmployeeWevService\EmployeeWevService\bin\Debug\netcoreapp3.1\EmployeeWevService.pdb
 C:\Users\Blu-Ray\source\repos\EmployeeWevService\EmployeeWevService\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Design.dll
-C:\Users\Blu-Ray\source\repos\EmployeeWevService\EmployeeWevService\obj\Debug\netcoreapp3.1\EmployeeWevService.csproj.CoreCompileInputs.cache
-C:\Users\Blu-Ray\source\repos\EmployeeWevService\EmployeeWevService\obj\Debug\netcoreapp3.1\EmployeeWevService.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\Blu-Ray\source\repos\EmployeeWevService\EmployeeWevService\obj\Debug\netcoreapp3.1\EmployeeWevService.dll
 C:\Users\Blu-Ray\source\repos\EmployeeWevService\EmployeeWevService\obj\Debug\netcoreapp3.1\EmployeeWevService.pdb
 C:\Users\Blu-Ray\source\repos\EmployeeWevService\EmployeeWevService\obj\Debug\netcoreapp3.1\EmployeeWevService.genruntimeconfig.cache
+C:\Users\Blu-Ray\source\repos\EmployeeWevService\EmployeeWevService\bin\Debug\netcoreapp3.1\AutoMapper.dll
+C:\Users\Blu-Ray\source\repos\EmployeeWevService\EmployeeWevService\bin\Debug\netcoreapp3.1\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\Blu-Ray\source\repos\EmployeeWevService\EmployeeWevService\obj\Debug\netcoreapp3.1\EmployeeWevService.csproj.CoreCompileInputs.cache
+C:\Users\Blu-Ray\source\repos\EmployeeWevService\EmployeeWevService\obj\Debug\netcoreapp3.1\EmployeeWevService.MvcApplicationPartsAssemblyInfo.cache

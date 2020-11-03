@@ -1,5 +1,6 @@
 ﻿using EmployeeWevService.Contexsts;
 using EmployeeWevService.Entities;
+using EmployeeWevService.Helper;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -20,22 +21,37 @@ namespace EmployeeWevService.Services
 
         public void CreateEmployee(Employee employee)
         {
-            throw new NotImplementedException();
+            if(employee == null)
+            {
+                throw new ArgumentNullException(nameof(employee));
+            }
+            _contexst.Add(employee);
         }
 
         public void DeleteEmployee(Guid EmployeeId)
         {
-            throw new NotImplementedException();
+            _contexst.Remove(EmployeeId);
         }
 
-        public bool EmployeeExist()
+        public bool EmployeeExist(Guid EmployeeId)
         {
-            throw new NotImplementedException();
+            if (EmployeeId == Guid.Empty)
+            {
+                throw new ArgumentNullException(nameof(EmployeeId));
+            }
+
+            return (_contexst.employees.Any(e => e.EmployeeId == EmployeeId));
         }
 
-        public int GetAgeAverage()
+        public double GetAgeAverage()
         {
-            throw new NotImplementedException();
+            double SumAges = 0;
+
+            foreach (Employee employee in _contexst.employees.ToList())
+            {
+                SumAges += employee.DateOfBirth.GetCurrentAge();
+            }
+            return (SumAges / GetEmployeesNumber());
         }
 
         public async Task<Employee> GetEmployee(Guid EmployeeId)
@@ -74,22 +90,32 @@ namespace EmployeeWevService.Services
 
         public double GetSalaryAverage()
         {
-            throw new NotImplementedException();
+            double SumSalary = 0;
+
+            foreach (Employee employee in _contexst.employees.ToList())
+            {
+                SumSalary += employee.salary;
+            }
+            return (SumSalary);
         }
 
         public double GetTotalSalary()
         {
-            throw new NotImplementedException();
+            double SumSalary = 0;
+            foreach (Employee employee in _contexst.employees.ToList())
+            {
+                SumSalary += employee.salary;
+            }
+            return (SumSalary / GetEmployeesNumber());
         }
 
-        public Task<bool> SaveChangesAsync()
+        public async Task<bool> SaveChangesAsync()
         {
-            throw new NotImplementedException();
+            return (await _contexst.SaveChangesAsync() > 0);
         }
 
         public void UpdateEmployee(Employee employee)
         {
-            throw new NotImplementedException();
         }
     }
 }

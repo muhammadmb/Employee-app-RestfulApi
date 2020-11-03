@@ -18,7 +18,7 @@ namespace EmployeeWevService.Services
 
         Double GetSalaryAverage();
 
-        int GetAgeAverage();
+        double GetAgeAverage();
 
         int GetEmployeesNumber();
 
@@ -30,6 +30,6 @@ namespace EmployeeWevService.Services
 
         Task<bool> SaveChangesAsync();
 
-        bool EmployeeExist();
+        bool EmployeeExist(Guid EmployeeId);
     }
 }
