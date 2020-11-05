@@ -82,6 +82,44 @@ namespace EmployeeWevService.Contexsts
                     ProId = Guid.Parse("a28888e9-2ba9-473a-a40f-e38cb54f9b38")
                 }
                 );
+            modelBuilder.Entity<Project>().HasData(
+                
+                new Project
+                {
+                    ProjectId = Guid.Parse("a28888e9-2ba9-473a-a40f-e38cb54f9b38"),
+                    Budget = 12000,
+                    ProjectName = "Test",
+                    Profit = 1000
+                },
+                new Project
+                {
+                    ProjectId = Guid.Parse("d28888e9-2ba9-473a-d40f-e38cb54f9b38"),
+                    Budget = 12000,
+                    ProjectName = "Test",
+                    Profit = 1000
+                },
+                new Project
+                {
+                    ProjectId = Guid.Parse("d29988e9-2ba9-473a-a40f-e38cb54f9b38"),
+                    Budget = 12000,
+                    ProjectName = "Test",
+                    Profit = 1000
+                },
+                new Project
+                {
+                    ProjectId = Guid.Parse("d28888e9-2ba9-473a-a40f-e39cb54f9b37"),
+                    Budget = 12000,
+                    ProjectName = "Test",
+                    Profit = 1000
+                },
+                new Project
+                {
+                    ProjectId = Guid.Parse("d28888e9-2ba9-473a-a40f-e38cb54f9b31"),
+                    Budget = 12000,
+                    ProjectName = "Test",
+                    Profit = 1000
+                }
+                );
         }
 
     }

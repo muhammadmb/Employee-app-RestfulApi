@@ -39,6 +39,7 @@ namespace EmployeeWevService
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IProjectRepository, ProjectRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

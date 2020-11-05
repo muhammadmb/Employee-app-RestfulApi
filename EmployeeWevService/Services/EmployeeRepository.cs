@@ -60,7 +60,7 @@ namespace EmployeeWevService.Services
             {
                 throw new ArgumentNullException(nameof(EmployeeId));
             }
-            return await _contexst.employees.Include(e => e.projects).FirstOrDefaultAsync(e => e.EmployeeId == EmployeeId);
+            return await _contexst.employees.Include(e => e.project).FirstOrDefaultAsync(e => e.EmployeeId == EmployeeId);
         }
 
         public IEnumerable<Employee> GetEmployeeBySalaryMoreThan(double salary)
@@ -80,7 +80,7 @@ namespace EmployeeWevService.Services
         // Get All Employees async
         public async Task<IEnumerable<Employee>> GetEmployees()
         {
-            return await _contexst.employees.Include(e => e.projects).ToListAsync();
+            return await _contexst.employees.Include(e => e.project).ToListAsync();
         }
 
         public int GetEmployeesNumber()

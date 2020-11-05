@@ -20,6 +20,7 @@ namespace EmployeeWevService.Entities
         [Required]
         public double Profit { get; set; }
 
-        public Employee employee { get; set; }
+        public IEnumerable<Employee> employees { get; set; }
+            = new List<Employee>();
     }
 }

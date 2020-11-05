@@ -39,7 +39,8 @@ namespace EmployeeWevService.Entities
 
         public Guid ProId { get; set; }
 
-        public ICollection<Project> projects { get; set; }
-            = new List<Project>();
+        //public ICollection<Project> projects { get; set; }
+        //    = new List<Project>();
+        public Project project { get; set; }
     }
 }
