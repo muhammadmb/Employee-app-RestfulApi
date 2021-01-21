@@ -61,8 +61,8 @@ C:\Users\Blu-Ray\source\repos\EmployeeApi\EmployeeApi\bin\Debug\netcoreapp3.1\Em
 C:\Users\Blu-Ray\source\repos\EmployeeApi\EmployeeApi\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.JsonPatch.dll
 C:\Users\Blu-Ray\source\repos\EmployeeApi\EmployeeApi\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\Blu-Ray\source\repos\EmployeeApi\EmployeeApi\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
-C:\Users\Blu-Ray\source\repos\EmployeeApi\EmployeeApi\obj\Debug\netcoreapp3.1\EmployeeApi.csproj.CoreCompileInputs.cache
-C:\Users\Blu-Ray\source\repos\EmployeeApi\EmployeeApi\obj\Debug\netcoreapp3.1\EmployeeApi.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\Blu-Ray\source\repos\EmployeeApi\EmployeeApi\obj\Debug\netcoreapp3.1\EmployeeApi.dll
 C:\Users\Blu-Ray\source\repos\EmployeeApi\EmployeeApi\obj\Debug\netcoreapp3.1\EmployeeApi.pdb
 C:\Users\Blu-Ray\source\repos\EmployeeApi\EmployeeApi\obj\Debug\netcoreapp3.1\EmployeeApi.genruntimeconfig.cache
+C:\Users\Blu-Ray\source\repos\EmployeeApi\EmployeeApi\obj\Debug\netcoreapp3.1\EmployeeApi.csproj.CoreCompileInputs.cache
+C:\Users\Blu-Ray\source\repos\EmployeeApi\EmployeeApi\obj\Debug\netcoreapp3.1\EmployeeApi.MvcApplicationPartsAssemblyInfo.cache

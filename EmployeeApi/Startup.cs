@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json.Serialization;
 using System;
 
 namespace EmployeeApi
@@ -27,7 +28,15 @@ namespace EmployeeApi
                 .AddNewtonsoftJson(
                     x => x.SerializerSettings.ReferenceLoopHandling =
                     Newtonsoft.Json.ReferenceLoopHandling.Ignore
-                    );
+                    )
+                .AddNewtonsoftJson(
+                    x =>
+                        {
+                            x.SerializerSettings.ContractResolver =
+                            new CamelCasePropertyNamesContractResolver();
+                        }
+                    )
+                ;
 
             services.AddDbContext<EmployeeContext>(options =>
             {

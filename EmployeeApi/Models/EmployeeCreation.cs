@@ -1,22 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace EmployeeApi.Entities
+namespace EmployeeApi.Models
 {
-    public class Employee
+    public class EmployeeCreation
     {
-        public Employee()
-        {
-            employeeProjects = new List<EmployeeProject>();
-        }
-
-        [Key]
-        public Guid EmployeeId { get; set; }
-
         [Required]
-        [MaxLength(50)]
         public string FirstName { get; set; }
 
         [Required]
@@ -42,16 +34,11 @@ namespace EmployeeApi.Entities
         [Required]
         public double salary { get; set; }
 
+        [Required]
         public DateTimeOffset DateOfBirth { get; set; }
 
-        public Guid departmentId { get; set; }
-
-        public Department department { get; set; }
-       
-        [NotMapped]
         public List<Guid> ProjectId { get; set; }
 
-        public List<EmployeeProject> employeeProjects { get; set; }
-
+        public Guid departmentId { get; set; }
     }
 }

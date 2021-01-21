@@ -38,7 +38,7 @@
           "lib/netstandard2.0/Humanizer.dll": {}
         }
       },
-      "Microsoft.AspNetCore.JsonPatch/3.1.11": {
+      "Microsoft.AspNetCore.JsonPatch/5.0.2": {
         "type": "package",
         "dependencies": {
           "Microsoft.CSharp": "4.7.0",
@@ -1519,18 +1519,20 @@
         "logo.png"
       ]
     },
-    "Microsoft.AspNetCore.JsonPatch/3.1.11": {
-      "sha512": "xiIzNshMnaVY5ECUaqd9y3GmrOd4TSPIK22AjrnD5NR4EHMGJSZDKiT9W+FJKvf+Z8PogOFaSQoopgrWWwvBlw==",
+    "Microsoft.AspNetCore.JsonPatch/5.0.2": {
+      "sha512": "4aPHlHLPISwGNe8I/fqxEoE4ZEivnpfaLDptRxvv9eV78VN3Bd+gd0hYN8GnQ1F9e7IdCcICqbAvNnU4EtYeEg==",
       "type": "package",
-      "path": "microsoft.aspnetcore.jsonpatch/3.1.11",
+      "path": "microsoft.aspnetcore.jsonpatch/5.0.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "THIRD-PARTY-NOTICES.TXT",
+        "lib/net461/Microsoft.AspNetCore.JsonPatch.dll",
+        "lib/net461/Microsoft.AspNetCore.JsonPatch.xml",
         "lib/netstandard2.0/Microsoft.AspNetCore.JsonPatch.dll",
         "lib/netstandard2.0/Microsoft.AspNetCore.JsonPatch.xml",
-        "microsoft.aspnetcore.jsonpatch.3.1.11.nupkg.sha512",
+        "microsoft.aspnetcore.jsonpatch.5.0.2.nupkg.sha512",
         "microsoft.aspnetcore.jsonpatch.nuspec"
       ]
     },
@@ -5562,6 +5564,7 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 8.1.0",
+      "Microsoft.AspNetCore.JsonPatch >= 5.0.2",
       "Microsoft.AspNetCore.Mvc.NewtonsoftJson >= 3.1.11",
       "Microsoft.EntityFrameworkCore >= 5.0.2",
       "Microsoft.EntityFrameworkCore.SqlServer >= 5.0.2",
@@ -5608,6 +5611,10 @@
           "AutoMapper.Extensions.Microsoft.DependencyInjection": {
             "target": "Package",
             "version": "[8.1.0, )"
+          },
+          "Microsoft.AspNetCore.JsonPatch": {
+            "target": "Package",
+            "version": "[5.0.2, )"
           },
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
             "target": "Package",

@@ -15,5 +15,12 @@ namespace EmployeeApi.Helper
                 yield return ep.project.ProjectName;
             }
         }
+        public static IEnumerable<Guid> GetProjectsId(this List<EmployeeProject> employeeProject)
+        {
+            foreach (var ep in employeeProject)
+            {
+                yield return ep.project.ProjectId;
+            }
+        }
     }
 }

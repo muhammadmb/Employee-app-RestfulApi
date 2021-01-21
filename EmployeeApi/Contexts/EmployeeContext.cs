@@ -1,15 +1,12 @@
 ﻿using EmployeeApi.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EmployeeApi.Contexts
 {
     public class EmployeeContext : DbContext
     {
-        public EmployeeContext( DbContextOptions<EmployeeContext> options) : base(options)
+        public EmployeeContext(DbContextOptions<EmployeeContext> options) : base(options)
         {
             ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
@@ -24,7 +21,6 @@ namespace EmployeeApi.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<EmployeeProject>().HasKey(ep => ep.)
 
             modelBuilder.Entity<EmployeeProject>()
                 .HasOne<Employee>(e => e.employee)
@@ -115,10 +111,10 @@ namespace EmployeeApi.Contexts
               );
 
             modelBuilder.Entity<Department>().HasData(
-            
+
                     new Department
                     {
-                        DepartmentId= Guid.Parse("12345677-2ba9-473a-a40f-e38cb54f9b35"),
+                        DepartmentId = Guid.Parse("12345677-2ba9-473a-a40f-e38cb54f9b35"),
                         ManagerId = Guid.Parse("d28888e9-2ba9-473a-a40f-e38cb54f9b35"),
                         DepartmentName = "Distribution department",
                         Headquarter = "Alexandria"
@@ -131,6 +127,7 @@ namespace EmployeeApi.Contexts
                         Headquarter = "Cairo"
                     }
             );
+
             modelBuilder.Entity<EmployeeProject>().HasData(
                 new EmployeeProject
                 {

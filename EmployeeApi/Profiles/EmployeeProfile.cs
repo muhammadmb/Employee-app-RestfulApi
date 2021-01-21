@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using EmployeeApi.Entities;
 using EmployeeApi.Helper;
+using EmployeeApi.Models;
 
 namespace EmployeeApi.Profiles
 {
@@ -7,7 +9,7 @@ namespace EmployeeApi.Profiles
     {
         public EmployeeProfile()
         {
-            CreateMap<Entities.Employee, Models.EmployeeDto>()
+            CreateMap<Employee, EmployeeDto>()
                 .ForMember(
                     dest => dest.Name,
                     opt => opt.MapFrom(src => $"{ src.FirstName} {src.LastName }")
@@ -24,8 +26,19 @@ namespace EmployeeApi.Profiles
                     dest => dest.Projects,
                     opt => opt.MapFrom(src => src.employeeProjects.GetProjectsNames())
                 )
-                ;
+                .ForMember(
+                    dest => dest.ProjectId,
+                    opt => opt.MapFrom(src => src.employeeProjects.GetProjectsId())
+                );
 
+            CreateMap<Employee, ReturnEmployee>()
+                .ForMember(
+                    dest => dest.Name,
+                    opt => opt.MapFrom(src => $"{ src.FirstName} {src.LastName }")
+                );
+
+            CreateMap<EmployeeCreation, Employee>();
+            CreateMap<Employee, EmployeeCreation>();
         }
     }
 }
