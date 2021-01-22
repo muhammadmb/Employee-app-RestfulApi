@@ -10,5 +10,6 @@ namespace EmployeeApi.Services
     {
         public Task<IEnumerable<Project>> GetProjects();
         public Task<Project> GetProject(Guid projectId);
+        bool ProjectExist(Guid projectId);
     }
 }

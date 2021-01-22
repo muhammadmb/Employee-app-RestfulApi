@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeApi.Services
 {
-    public class DepartmentRepository : IDepartmentRepository
+    public class DepartmentRepository : IDepartmentRepository, IDisposable
     {
         private EmployeeContext _context;
 
@@ -32,6 +32,14 @@ namespace EmployeeApi.Services
                 .FirstOrDefaultAsync();
         }
 
-        
+        public bool DepartmentExist(Guid departmentId)
+        {
+            return _context.Departments.Any(d => d.DepartmentId == departmentId);
+        }
+
+        public void Dispose()
+        {
+        }
+
     }
 }

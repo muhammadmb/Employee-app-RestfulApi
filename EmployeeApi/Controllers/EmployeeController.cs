@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EmployeeApi.Entities;
+using EmployeeApi.Helper;
 using EmployeeApi.Models;
 using EmployeeApi.Services;
 using Microsoft.AspNetCore.JsonPatch;
@@ -18,13 +19,23 @@ namespace EmployeeApi.Controllers
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IMapper _mapper;
+        private readonly IProjectRepository _projectRepository;
+        private readonly IDepartmentRepository _departmentRepository;
 
-        public EmployeeController(IEmployeeRepository employeeRepsitory, IMapper mapper)
+        public EmployeeController(
+            IEmployeeRepository employeeRepsitory,
+            IProjectRepository projectRepository,
+            IDepartmentRepository departmentRepository,
+            IMapper mapper)
         {
             _employeeRepository = employeeRepsitory ??
                 throw new ArgumentNullException(nameof(employeeRepsitory));
             _mapper = mapper ??
                 throw new ArgumentNullException(nameof(mapper));
+            _projectRepository = projectRepository ??
+                throw new ArgumentNullException(nameof(projectRepository));
+            _departmentRepository = departmentRepository ??
+                throw new ArgumentNullException(nameof(departmentRepository));
         }
 
         [HttpGet]
@@ -44,6 +55,11 @@ namespace EmployeeApi.Controllers
                 throw new ArgumentNullException(nameof(employeeId));
             }
 
+            if (!_employeeRepository.EmployeeExist(employeeId))
+            {
+                return NotFound("This employee is not Exist");
+            }
+
             var EmployeeFromDb = await _employeeRepository.GetEmployee(employeeId);
 
             var Employee = _mapper.Map<EmployeeDto>(EmployeeFromDb);
@@ -54,6 +70,21 @@ namespace EmployeeApi.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateEmployee(EmployeeCreation employeeCreation)
         {
+            if (employeeCreation == null)
+            {
+                throw new ArgumentNullException(nameof(employeeCreation));
+            }
+
+            if (!employeeCreation.ProjectId.CheckExistanceOfProjects(_projectRepository))
+            {
+                return BadRequest("This project is not Exist");
+            }
+
+            if (!_departmentRepository.DepartmentExist(employeeCreation.departmentId))
+            {
+                return BadRequest("this deprtment Id Is not exist");
+            }
+
             var CreatedEmployee = _mapper.Map<Employee>(employeeCreation);
 
             _employeeRepository.CreateEmployee(CreatedEmployee);
@@ -82,12 +113,33 @@ namespace EmployeeApi.Controllers
                 throw new ArgumentNullException(nameof(employeeCreation));
             }
 
+            if (!_employeeRepository.EmployeeExist(employeeId))
+            {
+                return NotFound("This employee is not Exist");
+            }
+
+            if (!employeeCreation.ProjectId.CheckExistanceOfProjects(_projectRepository))
+            {
+                return BadRequest("This project is not Exist");
+            }
+            
+            if (!_departmentRepository.DepartmentExist(employeeCreation.departmentId))
+            {
+                return BadRequest("this deprtment Id Is not exist");
+            }
+            
             var employeeFromRepo = await _employeeRepository.GetEmployee(employeeId);
 
             // if the employee is not exist, we add new employee
 
             if (employeeFromRepo == null)
             {
+
+                if (!employeeCreation.ProjectId.CheckExistanceOfProjects(_projectRepository))
+                {
+                    return BadRequest("This project is not Exist");
+                }
+
                 var CreatedEmployee = _mapper.Map<Employee>(employeeCreation);
                 CreatedEmployee.EmployeeId = employeeId;
 
@@ -141,12 +193,33 @@ namespace EmployeeApi.Controllers
 
             _mapper.Map(employee, employeeFromRepo);
 
+            if (!employee.ProjectId.CheckExistanceOfProjects(_projectRepository))
+            {
+                return BadRequest("This project is not Exist");
+            }
+
+            if (!_departmentRepository.DepartmentExist(employee.departmentId))
+            {
+                return BadRequest("this deprtment Id Is not exist");
+            }
+
             _employeeRepository.PartialUpdateEmployee(employeeFromRepo, hasProject);
 
             await _employeeRepository.SaveChangesAsync();
 
             return NoContent();
         }
+        [HttpDelete("{employeeId}")]
+        public IActionResult DeleteEmployee(Guid employeeId)
+        {
+            if (!_employeeRepository.EmployeeExist(employeeId))
+            {
+                return NotFound("This employee is not Exist");
+            }
 
+            _employeeRepository.Delete(employeeId);
+
+            return NoContent();
+        }
     }
 }

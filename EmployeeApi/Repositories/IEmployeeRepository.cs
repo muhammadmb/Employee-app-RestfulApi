@@ -21,6 +21,6 @@ namespace EmployeeApi.Services
         public bool EmployeeExist(Guid EmployeeId);
         
         public Task<bool> SaveChangesAsync();
-        
+        void Delete(Guid employeeId);
     }
 }

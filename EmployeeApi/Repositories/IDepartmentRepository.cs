@@ -10,5 +10,6 @@ namespace EmployeeApi.Services
         Task<IEnumerable<Department>> getDepartments();
         Task<Department> getDepartment(Guid departmentId);
 
+        bool DepartmentExist(Guid departmentId);
     }
 }

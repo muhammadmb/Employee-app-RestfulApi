@@ -35,5 +35,9 @@ namespace EmployeeApi.Services
                 .FirstOrDefaultAsync();
         }
 
+        public bool ProjectExist(Guid projectId)
+        {
+            return _context.Projects.Any(p => p.ProjectId == projectId);
+        }
     }
 }

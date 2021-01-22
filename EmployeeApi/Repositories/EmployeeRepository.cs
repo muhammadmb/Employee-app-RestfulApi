@@ -89,30 +89,11 @@ namespace EmployeeApi.Services
                             EmployeeId = employee.EmployeeId,
                             ProjectId = emp
                         };
-
-                    if (employeeProjectsInDb.Any(ep => ep.ProjectId == emp))
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        _context.Add(employeeProject);
-                    }
-
                     list.Add(employeeProject);
                 }
 
-                foreach (var ep in employeeProjectsInDb)
-                {
-                    if (list.Any(i => i.ProjectId == ep.ProjectId))
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        _context.Remove(ep);
-                    }
-                }
+                _context.EmployeeProjects.RemoveRange(employeeProjectsInDb);
+                _context.EmployeeProjects.AddRange(list);
 
                 employee.employeeProjects = list;
                 _context.Employees.Update(employee);
@@ -133,6 +114,16 @@ namespace EmployeeApi.Services
             PartialUpdateEmployee(employee, true);
         }
 
+        public void Delete(Guid employeeId)
+        {
+            Employee deleteEmployee = new Employee
+            {
+                EmployeeId = employeeId
+            };
+
+            _context.Employees.Remove(deleteEmployee);
+            _context.SaveChanges();
+        }
 
         public bool EmployeeExist(Guid EmployeeId)
         {
@@ -150,3 +141,52 @@ namespace EmployeeApi.Services
 
     }
 }
+
+//if (editProject)
+//{
+//    var list = new List<EmployeeProject>();
+
+//    var employeeProjectsInDb = _context.EmployeeProjects.Where(x => x.EmployeeId == employee.EmployeeId).ToList();
+
+//    var IdList = employee.ProjectId.ToList();
+
+//    foreach (var emp in IdList)
+//    {
+//        var employeeProject =
+//            new EmployeeProject
+//            {
+//                EmployeeId = employee.EmployeeId,
+//                ProjectId = emp
+//            };
+
+//        if (employeeProjectsInDb.Any(ep => ep.ProjectId == emp))
+//        {
+//            continue;
+//        }
+//        else
+//        {
+//            _context.Add(employeeProject);
+//        }
+
+//        list.Add(employeeProject);
+//    }
+
+//    foreach (var ep in employeeProjectsInDb)
+//    {
+//        if (list.Any(i => i.ProjectId == ep.ProjectId))
+//        {
+//            continue;
+//        }
+//        else
+//        {
+//            _context.Remove(ep);
+//        }
+//    }
+
+//    employee.employeeProjects = list;
+//    _context.Employees.Update(employee);
+//}
+//else
+//{
+//    _context.Employees.Update(employee);
+//}
