@@ -9,7 +9,8 @@ namespace EmployeeApi.Services
     {
         Task<IEnumerable<Department>> getDepartments();
         Task<Department> getDepartment(Guid departmentId);
-
+        void CreateDepartment(Department department, Guid managerId);
         bool DepartmentExist(Guid departmentId);
+        public Task<bool> SaveChangesAsync();
     }
 }

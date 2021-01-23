@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EmployeeApi.Entities;
 using EmployeeApi.Models;
 using EmployeeApi.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -34,14 +35,43 @@ namespace EmployeeApi.Controllers
             return Ok(departments);
         }
 
-        [HttpGet("{departmentId}")]
+        [HttpGet("{departmentId}", Name ="GetDepartment")]
         public async Task<IActionResult> GetDepartment(Guid departmentId)
         {
+
+            if (!_departmentRepository.DepartmentExist(departmentId))
+            {
+                return NotFound();
+            }
+            
             var departmentFromDb = await _departmentRepository.getDepartment(departmentId);
 
             var department = _mapper.Map<DepartmentDto>(departmentFromDb);
 
             return Ok(department);
         }
+
+        [HttpPost("manager/{managerId}")]
+        public async Task<IActionResult> CreateDrepartment(DepartmentCreation departmentCreation, Guid managerId)
+        {
+            if (departmentCreation == null)
+            {
+                throw new ArgumentNullException(nameof(departmentCreation));
+            }
+
+            var department = _mapper.Map<Department>(departmentCreation);
+
+            _departmentRepository.CreateDepartment(department, managerId);
+
+            await _departmentRepository.SaveChangesAsync();
+
+            return CreatedAtRoute(
+                "GetDepartment",
+                new {departmentId = department.DepartmentId},
+                departmentCreation
+                );
+
+        }
+
     }
 }

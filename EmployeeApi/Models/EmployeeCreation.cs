@@ -34,9 +34,6 @@ namespace EmployeeApi.Models
 
         [Required]
         public DateTimeOffset DateOfBirth { get; set; }
-
-        public List<Guid> ProjectId { get; set; }
-
-        public Guid departmentId { get; set; }
+        
     }
 }

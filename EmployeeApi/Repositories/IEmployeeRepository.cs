@@ -13,11 +13,14 @@ namespace EmployeeApi.Services
         Task<IEnumerable<Employee>> GetEmployees(IEnumerable<Guid> Ids);
         
         Task<Employee> GetEmployee(Guid Id);
-        
+        void CreateEmployeeToDepartmentWithProject(Guid departmentId, IEnumerable<Guid> projectIds, Employee createdEmployee);
+
         void CreateEmployee(Employee createdEmployee);
+
         public void PartialUpdateEmployee(Employee employee, bool editProject);
+
         void UpdateEmployee(Employee employee);
-        
+
         public bool EmployeeExist(Guid EmployeeId);
         
         public Task<bool> SaveChangesAsync();

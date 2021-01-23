@@ -32,9 +32,20 @@ namespace EmployeeApi.Services
                 .FirstOrDefaultAsync();
         }
 
+        public void CreateDepartment(Department department, Guid managerId)
+        {
+            department.ManagerId = managerId;
+            _context.Departments.Add(department);
+        }
+
         public bool DepartmentExist(Guid departmentId)
         {
             return _context.Departments.Any(d => d.DepartmentId == departmentId);
+        }
+
+        public async Task<bool> SaveChangesAsync()
+        {
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public void Dispose()

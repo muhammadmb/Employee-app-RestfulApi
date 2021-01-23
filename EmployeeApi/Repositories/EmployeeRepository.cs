@@ -29,7 +29,7 @@ namespace EmployeeApi.Services
 
         public async Task<IEnumerable<Employee>> GetEmployees(IEnumerable<Guid> Ids)
         {
-            return await _context.Employees
+                return await _context.Employees
                 .Where(e => Ids.Contains(e.EmployeeId))
                 .Include(e => e.department)
                 .Include(e => e.employeeProjects).ThenInclude(ep => ep.project)
@@ -47,22 +47,21 @@ namespace EmployeeApi.Services
         }
 
         public void CreateEmployee(Employee createdEmployee)
+        {           
+            _context.Employees.Add(createdEmployee);
+        }
+        public void CreateEmployeeToDepartmentWithProject(Guid departmentId, IEnumerable<Guid> projectIds, Employee createdEmployee)
         {
-            if(createdEmployee == null)
-            {
-                throw new ArgumentNullException(nameof(createdEmployee));
-            }
-
-            foreach (var emp in createdEmployee.ProjectId)
+            createdEmployee.departmentId = departmentId;
+            foreach (var projectId in projectIds)
             {
                 createdEmployee.employeeProjects.Add(new EmployeeProject
                 {
                     EmployeeId = createdEmployee.EmployeeId,
-                    ProjectId = emp
-                }
-                );
+                    ProjectId = projectId
+                });
             }
-            
+
             _context.Employees.Add(createdEmployee);
         }
 
@@ -83,13 +82,17 @@ namespace EmployeeApi.Services
 
                 foreach (var emp in IdList)
                 {
-                    var employeeProject =
-                        new EmployeeProject
-                        {
-                            EmployeeId = employee.EmployeeId,
-                            ProjectId = emp
-                        };
-                    list.Add(employeeProject);
+                    
+                        var employeeProject =
+                            new EmployeeProject
+                            {
+                                EmployeeId = employee.EmployeeId,
+                                ProjectId = emp
+                            };
+                    if (!list.Any(p => p.ProjectId == emp))
+                    {
+                        list.Add(employeeProject);
+                    }
                 }
 
                 _context.EmployeeProjects.RemoveRange(employeeProjectsInDb);
@@ -106,12 +109,7 @@ namespace EmployeeApi.Services
 
         public void UpdateEmployee(Employee employee)
         {
-            if (employee == null)
-            {
-                throw new ArgumentNullException(nameof(employee));
-            }
-
-            PartialUpdateEmployee(employee, true);
+            _context.Employees.Update(employee);
         }
 
         public void Delete(Guid employeeId)
@@ -141,52 +139,3 @@ namespace EmployeeApi.Services
 
     }
 }
-
-//if (editProject)
-//{
-//    var list = new List<EmployeeProject>();
-
-//    var employeeProjectsInDb = _context.EmployeeProjects.Where(x => x.EmployeeId == employee.EmployeeId).ToList();
-
-//    var IdList = employee.ProjectId.ToList();
-
-//    foreach (var emp in IdList)
-//    {
-//        var employeeProject =
-//            new EmployeeProject
-//            {
-//                EmployeeId = employee.EmployeeId,
-//                ProjectId = emp
-//            };
-
-//        if (employeeProjectsInDb.Any(ep => ep.ProjectId == emp))
-//        {
-//            continue;
-//        }
-//        else
-//        {
-//            _context.Add(employeeProject);
-//        }
-
-//        list.Add(employeeProject);
-//    }
-
-//    foreach (var ep in employeeProjectsInDb)
-//    {
-//        if (list.Any(i => i.ProjectId == ep.ProjectId))
-//        {
-//            continue;
-//        }
-//        else
-//        {
-//            _context.Remove(ep);
-//        }
-//    }
-
-//    employee.employeeProjects = list;
-//    _context.Employees.Update(employee);
-//}
-//else
-//{
-//    _context.Employees.Update(employee);
-//}
