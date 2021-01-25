@@ -4,7 +4,7 @@ using EmployeeApi.Filters;
 using EmployeeApi.Helper;
 using EmployeeApi.ModelBinders;
 using EmployeeApi.Models;
-using EmployeeApi.Services;
+using EmployeeApi.Repositories;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -169,6 +169,7 @@ namespace EmployeeApi.Controllers
 
             return NoContent();
         }
+        
         [HttpDelete("{employeeId}")]
         public IActionResult DeleteEmployee(Guid employeeId)
         {

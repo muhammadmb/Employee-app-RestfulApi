@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using EmployeeApi.Entities;
 using EmployeeApi.Models;
-using EmployeeApi.Services;
+using EmployeeApi.Repositories;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace EmployeeApi.Controllers
@@ -35,7 +35,7 @@ namespace EmployeeApi.Controllers
             return Ok(departments);
         }
 
-        [HttpGet("{departmentId}", Name ="GetDepartment")]
+        [HttpGet("{departmentId}", Name = "GetDepartment")]
         public async Task<IActionResult> GetDepartment(Guid departmentId)
         {
 
@@ -43,7 +43,7 @@ namespace EmployeeApi.Controllers
             {
                 return NotFound();
             }
-            
+
             var departmentFromDb = await _departmentRepository.getDepartment(departmentId);
 
             var department = _mapper.Map<DepartmentDto>(departmentFromDb);
@@ -67,10 +67,80 @@ namespace EmployeeApi.Controllers
 
             return CreatedAtRoute(
                 "GetDepartment",
-                new {departmentId = department.DepartmentId},
+                new { departmentId = department.DepartmentId },
                 departmentCreation
                 );
+        }
 
+        [HttpPut("{departmentId}")]
+        public async Task<IActionResult> UpdateDepartment(DepartmentCreation departmentCreation, Guid departmentId)
+        {
+            if (departmentCreation == null)
+            {
+                throw new ArgumentNullException(nameof(departmentCreation));
+            }
+
+            if (!_departmentRepository.DepartmentExist(departmentId))
+            {
+                return NotFound("Please Enter right Department ID");
+            }
+
+            var departmentFromRepo = await _departmentRepository.getDepartment(departmentId);
+
+            _mapper.Map(departmentCreation, departmentFromRepo);
+
+            _departmentRepository.Update(departmentFromRepo);
+
+            await _departmentRepository.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpPatch("{departmentId}")]
+        public async Task<IActionResult> partialUpdateDepartment(Guid departmentId, JsonPatchDocument<DepartmentCreation> patchDocument)
+        {
+            if (!_departmentRepository.DepartmentExist(departmentId))
+            {
+                return NotFound("Please Enter right Department ID");
+            }
+
+            var departmentFromRepo = await _departmentRepository.getDepartment(departmentId);
+
+            if (departmentFromRepo == null)
+            {
+                return NotFound("this department is not exist");
+            }
+
+            var department = _mapper.Map<DepartmentCreation>(departmentFromRepo);
+
+            patchDocument.ApplyTo(department, ModelState);
+
+            if (!TryValidateModel(department))
+            {
+                return ValidationProblem(ModelState);
+            }
+
+            _mapper.Map(department, departmentFromRepo);
+
+            _departmentRepository.Update(departmentFromRepo);
+
+            await _departmentRepository.SaveChangesAsync();
+
+            return NoContent();
+
+        }
+
+        [HttpDelete("{departmentId}")]
+        public IActionResult DeleteDepartment(Guid departmentId)
+        {
+            if (!_departmentRepository.DepartmentExist(departmentId))
+            {
+                return NotFound("Please Enter right Department ID");
+            }
+
+            _departmentRepository.Delete(departmentId);
+
+            return NoContent();
         }
 
     }

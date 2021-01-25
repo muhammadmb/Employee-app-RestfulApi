@@ -17,6 +17,5 @@ namespace EmployeeApi.Models
         public string department { get; set; }
         public int age { get; set; }
         public List<string> Projects { get; set; }
-        public List<Guid> ProjectId { get; set; }
     }
 }

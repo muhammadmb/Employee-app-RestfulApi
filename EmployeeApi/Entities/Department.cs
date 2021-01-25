@@ -21,6 +21,5 @@ namespace EmployeeApi.Entities
         [Required]
         public Guid ManagerId { get; set; }
 
-        //public Employee Manager { get; set; }
     }
 }

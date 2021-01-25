@@ -1,4 +1,4 @@
-﻿namespace EmployeeApi.Services
+﻿namespace EmployeeApi.Repositories
 {
     public class EmployeeProjectRepository : IEmployeeProjectRepository
     {

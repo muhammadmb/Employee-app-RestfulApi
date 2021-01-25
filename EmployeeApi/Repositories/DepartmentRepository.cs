@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EmployeeApi.Services
+namespace EmployeeApi.Repositories
 {
     public class DepartmentRepository : IDepartmentRepository, IDisposable
     {
@@ -38,6 +38,19 @@ namespace EmployeeApi.Services
             _context.Departments.Add(department);
         }
 
+        public void Update(Department department)
+        {
+            _context.Departments.Update(department);
+        }
+        public void Delete(Guid departmentId)
+        {
+            var department = new Department
+            {
+                DepartmentId = departmentId
+            };
+            _context.Departments.Remove(department);
+            _context.SaveChanges();
+        }
         public bool DepartmentExist(Guid departmentId)
         {
             return _context.Departments.Any(d => d.DepartmentId == departmentId);

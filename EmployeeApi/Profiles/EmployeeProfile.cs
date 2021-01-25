@@ -25,10 +25,6 @@ namespace EmployeeApi.Profiles
                 .ForMember(
                     dest => dest.Projects,
                     opt => opt.MapFrom(src => src.employeeProjects.GetProjectsNames())
-                )
-                .ForMember(
-                    dest => dest.ProjectId,
-                    opt => opt.MapFrom(src => src.employeeProjects.GetProjectsId())
                 );
 
             CreateMap<Employee, ReturnEmployee>()

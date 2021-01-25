@@ -1,6 +1,6 @@
 using AutoMapper;
 using EmployeeApi.Contexts;
-using EmployeeApi.Services;
+using EmployeeApi.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -46,6 +46,7 @@ namespace EmployeeApi
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IStatisticsRepository, StatisticsRepository>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IEmployeeProjectRepository, EmployeeProjectRepository>();
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();

@@ -2,7 +2,7 @@
 using EmployeeApi.Entities;
 using EmployeeApi.ModelBinders;
 using EmployeeApi.Models;
-using EmployeeApi.Services;
+using EmployeeApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -36,14 +36,14 @@ namespace EmployeeApi.Controllers
             return Ok(employees);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateEmployees(IEnumerable<EmployeeCreation> employeeCreations)
+        [HttpPost("Department/{departmentId}")]
+        public async Task<IActionResult> CreateEmployees(Guid departmentId, IEnumerable<EmployeeCreation> employeeCreations)
         {
             var employees = _mapper.Map<IEnumerable<Employee>>(employeeCreations);
 
             foreach (var employee in employees)
             {
-                _employeeRepository.CreateEmployee(employee);
+                _employeeRepository.CreateEmployee(departmentId ,employee);
             }
 
             await _employeeRepository.SaveChangesAsync();
@@ -52,14 +52,12 @@ namespace EmployeeApi.Controllers
                     employees.Select(e => e.EmployeeId).ToList()
                 );
 
-            var returnEmployees = _mapper.Map<IEnumerable<ReturnEmployee>>(getEmployees);
-
             var EmployeesIds = string.Join(",", employees.Select(e => e.EmployeeId));
 
             return CreatedAtRoute(
                 "GetCollectionOfEmployees",
                 new { EmployeesIds },
-                returnEmployees
+                employeeCreations
                 );
         }
     }

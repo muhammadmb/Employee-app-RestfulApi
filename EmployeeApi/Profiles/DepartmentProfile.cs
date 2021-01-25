@@ -14,7 +14,9 @@ namespace EmployeeApi.Profiles
                     dest => dest.Employees,
                     opt => opt.MapFrom(src => src.Employees.GetEmployeesName())
                 );
+
             CreateMap<DepartmentCreation, Department>();
+            CreateMap<Department, DepartmentCreation>();
         }
     }
 }

@@ -14,7 +14,5 @@ namespace EmployeeApi.Models
 
         public List<string> Employees { get; set; }
 
-        public Guid ManagerId { get; set; }
-
     }
 }

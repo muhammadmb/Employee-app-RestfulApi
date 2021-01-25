@@ -6,13 +6,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EmployeeApi.Services
+namespace EmployeeApi.Repositories
 {
     public class EmployeeRepository : IEmployeeRepository, IDisposable
     {
         private readonly EmployeeContext _context;
 
-        public EmployeeRepository( EmployeeContext context)
+        public EmployeeRepository(EmployeeContext context)
         {
             _context = context ??
                 throw new ArgumentNullException(nameof(context));
@@ -20,7 +20,7 @@ namespace EmployeeApi.Services
 
         public async Task<IEnumerable<Employee>> GetEmployees()
         {
-            return await 
+            return await
                 _context.Employees
                 .Include(e => e.department)
                 .Include(e => e.employeeProjects).ThenInclude(ep => ep.project)
@@ -29,11 +29,11 @@ namespace EmployeeApi.Services
 
         public async Task<IEnumerable<Employee>> GetEmployees(IEnumerable<Guid> Ids)
         {
-                return await _context.Employees
-                .Where(e => Ids.Contains(e.EmployeeId))
-                .Include(e => e.department)
-                .Include(e => e.employeeProjects).ThenInclude(ep => ep.project)
-                .ToListAsync();
+            return await _context.Employees
+            .Where(e => Ids.Contains(e.EmployeeId))
+            .Include(e => e.department)
+            .Include(e => e.employeeProjects).ThenInclude(ep => ep.project)
+            .ToListAsync();
         }
 
         public async Task<Employee> GetEmployee(Guid Id)
@@ -46,8 +46,9 @@ namespace EmployeeApi.Services
                 .FirstOrDefaultAsync();
         }
 
-        public void CreateEmployee(Employee createdEmployee)
-        {           
+        public void CreateEmployee(Guid departmentId, Employee createdEmployee)
+        {
+            createdEmployee.departmentId = departmentId;
             _context.Employees.Add(createdEmployee);
         }
         public void CreateEmployeeToDepartmentWithProject(Guid departmentId, IEnumerable<Guid> projectIds, Employee createdEmployee)
@@ -82,13 +83,13 @@ namespace EmployeeApi.Services
 
                 foreach (var emp in IdList)
                 {
-                    
-                        var employeeProject =
-                            new EmployeeProject
-                            {
-                                EmployeeId = employee.EmployeeId,
-                                ProjectId = emp
-                            };
+
+                    var employeeProject =
+                        new EmployeeProject
+                        {
+                            EmployeeId = employee.EmployeeId,
+                            ProjectId = emp
+                        };
                     if (!list.Any(p => p.ProjectId == emp))
                     {
                         list.Add(employeeProject);

@@ -1,8 +1,6 @@
-﻿using EmployeeApi.Services;
+﻿using EmployeeApi.Repositories;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EmployeeApi.Helper
 {
