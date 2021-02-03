@@ -58,12 +58,17 @@ namespace EmployeeApi.Controllers
                 throw new ArgumentNullException(nameof(employeeId));
             }
 
-            if (!_employeeRepository.EmployeeExist(employeeId))
-            {
-                return NotFound("This employee is not Exist");
-            }
+            //if (!_employeeRepository.EmployeeExist(employeeId))
+            //{
+            //    return NotFound("This employee is not Exist");
+            //}
 
             var Employee = await _employeeRepository.GetEmployee(employeeId);
+
+            if(Employee == null)
+            {
+                return NotFound();
+            }
 
             return Ok(Employee);
         }
@@ -119,13 +124,13 @@ namespace EmployeeApi.Controllers
             {
                 throw new ArgumentNullException(nameof(employeeCreation));
             }
-
-            if (!_employeeRepository.EmployeeExist(employeeId))
-            {
-                return NotFound("This employee is not Exist");
-            }
-
+           
             var employeeFromRepo = await _employeeRepository.GetEmployee(employeeId);
+
+            if(employeeFromRepo == null)
+            {
+                return NotFound();
+            }
 
             _mapper.Map(employeeCreation, employeeFromRepo);
 

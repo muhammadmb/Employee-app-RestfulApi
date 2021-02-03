@@ -17,10 +17,10 @@ namespace EmployeeApi.Controllers
                 throw new ArgumentNullException(nameof(statisticsRepository));
         }
 
-        [HttpGet("Employees/Statistics")]
+        [HttpGet("Departments/Statistics")]
         public async Task<IActionResult> GetEmployeesStatistics()
         {
-            return Ok(await _statisticsRepository.GetEmployeeStatisics());
+            return Ok(await _statisticsRepository.GetDepartmentsStatisics());
         }
 
 

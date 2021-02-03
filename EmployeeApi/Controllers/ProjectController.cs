@@ -39,6 +39,11 @@ namespace EmployeeApi.Controllers
         {
             var projectFromDb = await _projectRepository.GetProject(projectId);
 
+            if (projectFromDb == null)
+            {
+                return NotFound();
+            }
+
             var project = _mapper.Map<ProjectDto>(projectFromDb);
 
             return Ok(project);
@@ -78,12 +83,12 @@ namespace EmployeeApi.Controllers
                 throw new ArgumentNullException(nameof(projectCreation));
             }
 
-            if (!_projectRepository.ProjectExist(projectId))
-            {
-                return NotFound("this Id is not right");
-            }
-
             var projectfromRepo = await _projectRepository.GetProject(projectId);
+
+            if(projectfromRepo == null)
+            {
+                return NotFound();
+            }
 
             _mapper.Map(projectCreation, projectfromRepo);
 
@@ -97,12 +102,13 @@ namespace EmployeeApi.Controllers
         [HttpPatch("{projectId}")]
         public async Task<IActionResult> PartialUpdate(Guid projectId, JsonPatchDocument<ProjectCreation> patchDocument)
         {
-            if (!_projectRepository.ProjectExist(projectId))
-            {
-                return NotFound("this Id is not right");
-            }
 
             var projectfromRepo = await _projectRepository.GetProject(projectId);
+
+            if(projectfromRepo == null)
+            {
+                return NotFound();
+            }
 
             var project = _mapper.Map<ProjectCreation>(projectfromRepo);
 

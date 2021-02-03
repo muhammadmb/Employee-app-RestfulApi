@@ -39,12 +39,12 @@ namespace EmployeeApi.Controllers
         public async Task<IActionResult> GetDepartment(Guid departmentId)
         {
 
-            if (!_departmentRepository.DepartmentExist(departmentId))
+            var departmentFromDb = await _departmentRepository.getDepartment(departmentId);
+
+            if(departmentFromDb == null)
             {
                 return NotFound();
             }
-
-            var departmentFromDb = await _departmentRepository.getDepartment(departmentId);
 
             var department = _mapper.Map<DepartmentDto>(departmentFromDb);
 
@@ -80,12 +80,12 @@ namespace EmployeeApi.Controllers
                 throw new ArgumentNullException(nameof(departmentCreation));
             }
 
-            if (!_departmentRepository.DepartmentExist(departmentId))
-            {
-                return NotFound("Please Enter right Department ID");
-            }
-
             var departmentFromRepo = await _departmentRepository.getDepartment(departmentId);
+
+            if(departmentFromRepo == null)
+            {
+                return NotFound();
+            }
 
             _mapper.Map(departmentCreation, departmentFromRepo);
 
@@ -99,10 +99,6 @@ namespace EmployeeApi.Controllers
         [HttpPatch("{departmentId}")]
         public async Task<IActionResult> partialUpdateDepartment(Guid departmentId, JsonPatchDocument<DepartmentCreation> patchDocument)
         {
-            if (!_departmentRepository.DepartmentExist(departmentId))
-            {
-                return NotFound("Please Enter right Department ID");
-            }
 
             var departmentFromRepo = await _departmentRepository.getDepartment(departmentId);
 

@@ -6,6 +6,6 @@ namespace EmployeeApi.Repositories
 {
     public interface IStatisticsRepository
     {
-        Task<IEnumerable<EmployeeStatistic>> GetEmployeeStatisics();
+        Task<IEnumerable<EmployeeStatistic>> GetDepartmentsStatisics();
     }
 }

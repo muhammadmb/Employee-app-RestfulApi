@@ -31,6 +31,12 @@ namespace EmployeeApi.Controllers
             [ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<Guid> EmployeesIds)
         {
             var EmployeesFromDb = await _employeeRepository.GetEmployees(EmployeesIds);
+
+            if(EmployeesFromDb == null)
+            {
+                return NotFound();
+            }
+
             var employees = _mapper.Map<IEnumerable<EmployeeDto>>(EmployeesFromDb);
 
             return Ok(employees);

@@ -1,4 +1,5 @@
 ﻿using EmployeeApi.Contexts;
+using EmployeeApi.Entities;
 using EmployeeApi.Models;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace EmployeeApi.Repositories
                 throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<IEnumerable<EmployeeStatistic>> GetEmployeeStatisics()
+        public async Task<IEnumerable<EmployeeStatistic>> GetDepartmentsStatisics()
         {
             var statistics =
                 _context.Employees.ToList()
@@ -49,5 +50,6 @@ namespace EmployeeApi.Repositories
                 .Select(d => d.DepartmentName)
                 .FirstOrDefault();
         }
+
     }
 }
