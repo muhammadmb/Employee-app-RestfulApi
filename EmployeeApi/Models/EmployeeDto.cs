@@ -13,7 +13,6 @@ namespace EmployeeApi.Models
         public string PhoneNumber { get; set; }
         public string picUrl { get; set; }
         public double salary { get; set; }
-        public Guid DepartmentId { get; set; }
         public string department { get; set; }
         public int age { get; set; }
         public List<string> Projects { get; set; }

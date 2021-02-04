@@ -3,6 +3,7 @@ using EmployeeApi.Contexts;
 using EmployeeApi.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,7 +29,6 @@ namespace EmployeeApi
             {
                 setupAction.ReturnHttpNotAcceptable = true;
             })
-                .AddXmlDataContractSerializerFormatters()
                 .AddNewtonsoftJson(
                     x => x.SerializerSettings.ReferenceLoopHandling =
                     Newtonsoft.Json.ReferenceLoopHandling.Ignore
@@ -40,7 +40,7 @@ namespace EmployeeApi
                             new CamelCasePropertyNamesContractResolver();
                         }
                     )
-                ;
+                .AddXmlDataContractSerializerFormatters();
 
             services.AddDbContext<EmployeeContext>(options =>
             {
@@ -63,6 +63,17 @@ namespace EmployeeApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler(appBuilder =>
+                {
+                    appBuilder.Run(async context =>
+                    {
+                        context.Response.StatusCode = 500;
+                        await context.Response.WriteAsync("An unexpected fault. Try again later.");
+                    });
+                });
             }
 
             app.UseRouting();

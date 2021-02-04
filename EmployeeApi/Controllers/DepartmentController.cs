@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EmployeeApi.Entities;
+using EmployeeApi.Filters;
 using EmployeeApi.Models;
 using EmployeeApi.Repositories;
 using Microsoft.AspNetCore.JsonPatch;
@@ -26,6 +27,8 @@ namespace EmployeeApi.Controllers
         }
 
         [HttpGet]
+        [HttpHead]
+
         public async Task<IActionResult> GetDepartments()
         {
             var departmentsFromDb = await _departmentRepository.getDepartments();
@@ -36,12 +39,14 @@ namespace EmployeeApi.Controllers
         }
 
         [HttpGet("{departmentId}", Name = "GetDepartment")]
+        [HttpHead("{departmentId}")]
+
         public async Task<IActionResult> GetDepartment(Guid departmentId)
         {
 
             var departmentFromDb = await _departmentRepository.getDepartment(departmentId);
 
-            if(departmentFromDb == null)
+            if (departmentFromDb == null)
             {
                 return NotFound();
             }
@@ -50,6 +55,26 @@ namespace EmployeeApi.Controllers
 
             return Ok(department);
         }
+
+        [HttpGet("{departmentId}/employees")]
+        [HttpHead("{departmentId}/employees")]
+        [EmployeesFilter]
+
+        public async Task<IActionResult> getEmployeesForDepartment(Guid departmentId)
+        {
+            var departmentFromRepo =  await _departmentRepository.getDepartment(departmentId);
+
+            if(departmentFromRepo == null)
+            {
+                return NotFound();
+            }
+
+            var employees = departmentFromRepo.Employees;
+
+            return Ok(employees);
+        }
+
+
 
         [HttpPost("manager/{managerId}")]
         public async Task<IActionResult> CreateDrepartment(DepartmentCreation departmentCreation, Guid managerId)

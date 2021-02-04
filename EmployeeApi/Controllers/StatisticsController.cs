@@ -18,6 +18,8 @@ namespace EmployeeApi.Controllers
         }
 
         [HttpGet("Departments/Statistics")]
+        [HttpHead("Departments/Statistics")]
+
         public async Task<IActionResult> GetEmployeesStatistics()
         {
             return Ok(await _statisticsRepository.GetDepartmentsStatisics());

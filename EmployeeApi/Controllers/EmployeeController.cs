@@ -42,6 +42,8 @@ namespace EmployeeApi.Controllers
 
         [HttpGet]
         [EmployeesFilter]
+        [HttpHead]
+
         public async Task<IActionResult> getEmployees()
         {
             var employees = await _employeeRepository.GetEmployees();
@@ -51,17 +53,14 @@ namespace EmployeeApi.Controllers
 
         [HttpGet("{employeeId}", Name = "GetEmployee")]
         [EmployeeFilter]
+        [HttpHead("{employeeId}")]
+
         public async Task<IActionResult> getEmployee(Guid employeeId)
         {
             if (employeeId == null)
             {
                 throw new ArgumentNullException(nameof(employeeId));
             }
-
-            //if (!_employeeRepository.EmployeeExist(employeeId))
-            //{
-            //    return NotFound("This employee is not Exist");
-            //}
 
             var Employee = await _employeeRepository.GetEmployee(employeeId);
 

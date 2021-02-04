@@ -12,7 +12,7 @@ Fully function RESTful API built with ASP.NET Core 3.1 to perform (Create, Updat
 
 [SQL Server](https://www.microsoft.com/en-us/sql-server)
 
-## To test import these requests to postman
+## To test 
 
-[Requests](https://drive.google.com/file/d/1KtNnDdYRTWZHmDtFdYN5tMoomD6KLdEB/view?usp=sharing)
+import these requests to postman from Employee app.postman_collection file
 

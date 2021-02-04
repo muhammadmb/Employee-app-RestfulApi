@@ -29,6 +29,8 @@ namespace EmployeeApi.Repositories
             return await _context.Departments
                 .Where(d => d.DepartmentId == departmentId)
                 .Include(d => d.Employees)
+                .ThenInclude(e => e.employeeProjects)
+                .ThenInclude(ep => ep.project)
                 .FirstOrDefaultAsync();
         }
 

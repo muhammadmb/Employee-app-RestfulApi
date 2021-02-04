@@ -32,6 +32,7 @@ namespace EmployeeApi.Repositories
                 .Where(p => p.ProjectId == projectId)
                 .Include(p => p.employeeProjects)
                 .ThenInclude(ep => ep.employee)
+                .ThenInclude(e => e.department)
                 .FirstOrDefaultAsync();
         }
 

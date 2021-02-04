@@ -27,6 +27,8 @@ namespace EmployeeApi.Controllers
         }
 
         [HttpGet("{EmployeesIds}", Name = "GetCollectionOfEmployees")]
+        [HttpHead("{EmployeesIds}")]
+
         public async Task<IActionResult> getSpecificEmployees(
             [ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<Guid> EmployeesIds)
         {

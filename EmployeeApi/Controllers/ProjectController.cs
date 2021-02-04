@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using EmployeeApi.Entities;
+using EmployeeApi.Filters;
 using EmployeeApi.Models;
 using EmployeeApi.Repositories;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace EmployeeApi.Controllers
@@ -26,6 +28,7 @@ namespace EmployeeApi.Controllers
         }
 
         [HttpGet]
+        [HttpHead]
         public async Task<IActionResult> getProjects()
         {
             var projectsFromDb = await _projectRepository.GetProjects();
@@ -35,6 +38,8 @@ namespace EmployeeApi.Controllers
         }
 
         [HttpGet("{projectId}", Name = "GetProject")]
+        [HttpHead("{projectId}")]
+
         public async Task<IActionResult> getProject(Guid projectId)
         {
             var projectFromDb = await _projectRepository.GetProject(projectId);
@@ -47,6 +52,26 @@ namespace EmployeeApi.Controllers
             var project = _mapper.Map<ProjectDto>(projectFromDb);
 
             return Ok(project);
+        }
+
+        [HttpGet("{projectId}/employees")]
+        [HttpHead("{projectId}/employees")]
+        [EmployeesFilter]
+        public async Task<IActionResult> GetEmployeesForProject(Guid projectId)
+        {
+            var projectFromDb = await _projectRepository.GetProject(projectId);
+
+            if (projectFromDb == null)
+            {
+                return NotFound();
+            }
+
+            var employeeProjects = projectFromDb.employeeProjects;
+
+            var Employees = employeeProjects
+                .Select(ep => ep.employee);
+
+            return Ok(Employees);
         }
 
         [HttpPost]
