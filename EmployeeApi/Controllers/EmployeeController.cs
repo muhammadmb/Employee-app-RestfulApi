@@ -5,6 +5,7 @@ using EmployeeApi.Helper;
 using EmployeeApi.ModelBinders;
 using EmployeeApi.Models;
 using EmployeeApi.Repositories;
+using EmployeeApi.ResourceParameters;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -44,9 +45,10 @@ namespace EmployeeApi.Controllers
         [EmployeesFilter]
         [HttpHead]
 
-        public async Task<IActionResult> getEmployees()
+        public async Task<IActionResult> getEmployees(
+            [FromQuery] EmployeeResourceParameter employeeResourceParameter)
         {
-            var employees = await _employeeRepository.GetEmployees();
+            var employees = await _employeeRepository.GetEmployees(employeeResourceParameter);
 
             return Ok(employees);
         }

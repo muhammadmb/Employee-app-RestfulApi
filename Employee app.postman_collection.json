@@ -29,6 +29,134 @@
 					"response": []
 				},
 				{
+					"name": "Get Employees Filtered by jobTitle",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/employees?JobTitle=football player",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"employees"
+							],
+							"query": [
+								{
+									"key": "JobTitle",
+									"value": "football player"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Employees Filtered by Department",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/employees?SearchQuery=ba",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"employees"
+							],
+							"query": [
+								{
+									"key": "SearchQuery",
+									"value": "ba"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Employees By Search",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/employees?Department=Managment department",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"employees"
+							],
+							"query": [
+								{
+									"key": "Department",
+									"value": "Managment department"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Employees By Search and filter by department",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/employees?Department=Managment department&SearchQuery=trika",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"employees"
+							],
+							"query": [
+								{
+									"key": "Department",
+									"value": "Managment department"
+								},
+								{
+									"key": "SearchQuery",
+									"value": "trika"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Head request Employees",
+					"request": {
+						"method": "HEAD",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/employees",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get Employees - XML Format",
 					"request": {
 						"method": "GET",
@@ -102,9 +230,51 @@
 					"response": []
 				},
 				{
+					"name": "Head request Collection Employees",
+					"request": {
+						"method": "HEAD",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/EmployeesCollection/59d0f4a7-02ef-4594-208e-08d8bc22ee27,530d9644-163c-4075-5a24-08d8bc24a759",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"EmployeesCollection",
+								"59d0f4a7-02ef-4594-208e-08d8bc22ee27,530d9644-163c-4075-5a24-08d8bc24a759"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get an Employee",
 					"request": {
 						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/employees/59d0f4a7-02ef-4594-208e-08d8bc22ee27",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"employees",
+								"59d0f4a7-02ef-4594-208e-08d8bc22ee27"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Head request an Employee",
+					"request": {
+						"method": "HEAD",
 						"header": [],
 						"url": {
 							"raw": "http://localhost:51044/api/employees/59d0f4a7-02ef-4594-208e-08d8bc22ee27",
@@ -497,6 +667,26 @@
 					"response": []
 				},
 				{
+					"name": "Head Projects",
+					"request": {
+						"method": "HEAD",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/projects",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"projects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get a Project",
 					"request": {
 						"method": "GET",
@@ -512,6 +702,49 @@
 								"api",
 								"projects",
 								"d28888e9-1111-1111-a401-e38cb54f9b36"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Head a Project",
+					"request": {
+						"method": "HEAD",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/projects/d28888e9-1111-1111-a401-e38cb54f9b36",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"projects",
+								"d28888e9-1111-1111-a401-e38cb54f9b36"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Employees For Project",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/projects/d28888e9-1111-1111-a401-e38cb54f9b36/employees",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"projects",
+								"d28888e9-1111-1111-a401-e38cb54f9b36",
+								"employees"
 							]
 						}
 					},
@@ -662,6 +895,26 @@
 					"response": []
 				},
 				{
+					"name": "Head request Departments",
+					"request": {
+						"method": "HEAD",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/departments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"departments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get a Department",
 					"request": {
 						"method": "GET",
@@ -683,9 +936,73 @@
 					"response": []
 				},
 				{
+					"name": "Head request a Department",
+					"request": {
+						"method": "HEAD",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/departments/12345677-2ba9-473a-a40f-e38cb54f9b35",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"departments",
+								"12345677-2ba9-473a-a40f-e38cb54f9b35"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Employees For Department",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/departments/12345677-2ba9-473a-a40f-e38cb54f9b35/employees",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"departments",
+								"12345677-2ba9-473a-a40f-e38cb54f9b35",
+								"employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get Employees Statistics",
 					"request": {
 						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/Departments/Statistics",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"Departments",
+								"Statistics"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Head request Employees Statistics",
+					"request": {
+						"method": "HEAD",
 						"header": [],
 						"url": {
 							"raw": "http://localhost:51044/api/Departments/Statistics",
