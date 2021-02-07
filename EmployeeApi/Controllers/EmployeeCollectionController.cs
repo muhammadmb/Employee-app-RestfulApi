@@ -29,12 +29,13 @@ namespace EmployeeApi.Controllers
         [HttpGet("{EmployeesIds}", Name = "GetCollectionOfEmployees")]
         [HttpHead("{EmployeesIds}")]
 
-        public async Task<IActionResult> getSpecificEmployees(
+        public async Task<IActionResult> getSpecificEmployees( 
+            [FromRoute]
             [ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<Guid> EmployeesIds)
         {
             var EmployeesFromDb = await _employeeRepository.GetEmployees(EmployeesIds);
 
-            if(EmployeesFromDb == null)
+            if(EmployeesIds.Count() != EmployeesFromDb.Count())
             {
                 return NotFound();
             }

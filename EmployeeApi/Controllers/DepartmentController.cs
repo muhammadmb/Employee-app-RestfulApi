@@ -74,8 +74,6 @@ namespace EmployeeApi.Controllers
             return Ok(employees);
         }
 
-
-
         [HttpPost("manager/{managerId}")]
         public async Task<IActionResult> CreateDrepartment(DepartmentCreation departmentCreation, Guid managerId)
         {

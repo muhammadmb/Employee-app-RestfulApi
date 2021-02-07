@@ -12,5 +12,8 @@ namespace EmployeeApi.Models
         [Required]
         public string Headquarter { get; set; }
 
+        public IEnumerable<EmployeeCreation> Employees { get; set; }
+            = new List<EmployeeCreation>();
+
     }
 }

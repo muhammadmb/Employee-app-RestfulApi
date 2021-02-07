@@ -29,6 +29,26 @@
 					"response": []
 				},
 				{
+					"name": "Head request Employees",
+					"request": {
+						"method": "HEAD",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/employees",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get Employees Filtered by jobTitle",
 					"request": {
 						"method": "GET",
@@ -137,26 +157,6 @@
 					"response": []
 				},
 				{
-					"name": "Head request Employees",
-					"request": {
-						"method": "HEAD",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:51044/api/employees",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "51044",
-							"path": [
-								"api",
-								"employees"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Get Employees - XML Format",
 					"request": {
 						"method": "GET",
@@ -224,6 +224,27 @@
 								"api",
 								"EmployeesCollection",
 								"59d0f4a7-02ef-4594-208e-08d8bc22ee27,530d9644-163c-4075-5a24-08d8bc24a759"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Collection Employees with not exist one",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/EmployeesCollection/59d0f4a7-02ef-4594-208e-08d8bc22ee27,530d9644-163c-4075-5a24-08d8bc24a759,530d9644-163c-4075-5a24-08d8bc24a754",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"EmployeesCollection",
+								"59d0f4a7-02ef-4594-208e-08d8bc22ee27,530d9644-163c-4075-5a24-08d8bc24a759,530d9644-163c-4075-5a24-08d8bc24a754"
 							]
 						}
 					},
@@ -1046,6 +1067,37 @@
 								"departments",
 								"manager",
 								"d28888e9-2ba9-473a-a40f-e38cb54f9b35"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add a Department with Employees",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"departmentName\": \"Maintanance\",\r\n    \"headquarter\": \"ankara\",\r\n    \"employees\":[\r\n        {\r\n            \"firstName\": \"mohamed\",\r\n            \"lastName\":\"salem\",\r\n            \"jobTitle\": \"accountant\",\r\n            \"email\": \"MohSalem@gmail.com\",\r\n            \"phoneNumber\": \"0875250012010\",\r\n            \"picUrl\": \"http://MoSalem.com\",\r\n            \"salary\": 8500.0,\r\n            \"dateOfBirth\": \"1994-12-01T00:00:00+00:00\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:51044/api/departments/manager/59d0f4a7-02ef-4594-208e-08d8bc22ee27",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"departments",
+								"manager",
+								"59d0f4a7-02ef-4594-208e-08d8bc22ee27"
 							]
 						}
 					},

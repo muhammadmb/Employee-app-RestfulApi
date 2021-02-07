@@ -89,12 +89,12 @@ namespace EmployeeApi.Controllers
 
             if (!_departmentRepository.DepartmentExist(departmentId))
             {
-                return BadRequest("this deprtment Id Is not exist");
+                return NotFound("this deprtment Id Is not exist");
             }
 
             if (!projectIds.ToList().CheckExistanceOfProjects(_projectRepository))
             {
-                return BadRequest("this Project Id Is not exist");
+                return NotFound("this Project Id Is not exist");
             }
 
             var CreatedEmployee = _mapper.Map<Employee>(employeeCreation);
