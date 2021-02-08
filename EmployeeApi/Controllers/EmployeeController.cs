@@ -188,5 +188,19 @@ namespace EmployeeApi.Controllers
 
             return NoContent();
         }
+
+        [HttpOptions()]
+        public IActionResult GetEmployeesOptions()
+        {
+            Response.Headers.Add("Allow", "Get, Options");
+            return Ok();
+        }
+
+        [HttpOptions("{employeeId}")]
+        public IActionResult GetEmployeeOptions()
+        {
+            Response.Headers.Add("Allow", "Get, Options, Put, Patch, Delete");
+            return Ok();
+        }
     }
 }

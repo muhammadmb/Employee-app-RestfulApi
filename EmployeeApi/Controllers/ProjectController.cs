@@ -165,5 +165,19 @@ namespace EmployeeApi.Controllers
 
             return NoContent();
         }
+
+        [HttpOptions()]
+        public IActionResult GetProjectsOptions()
+        {
+            Response.Headers.Add("Allow","Get, Options, Post");
+            return Ok();
+        }
+
+        [HttpOptions("{projectId}")]
+        public IActionResult GetProjectOptions()
+        {
+            Response.Headers.Add("Allow", "Get, Options, Put, Patch, Delete");
+            return Ok();
+        }
     }
 }

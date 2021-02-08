@@ -661,6 +661,65 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Employee Options",
+					"request": {
+						"method": "OPTIONS",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:51044/api/employees",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Single Employee Options",
+					"request": {
+						"method": "OPTIONS",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:51044/api/employees/d28888e9-1111-1111-a401-e38cb54f9b36",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"employees",
+								"d28888e9-1111-1111-a401-e38cb54f9b36"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -864,6 +923,65 @@
 					"name": "delete Project",
 					"request": {
 						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:51044/api/projects/d28888e9-1111-1111-a401-e38cb54f9b36",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"projects",
+								"d28888e9-1111-1111-a401-e38cb54f9b36"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Projects Options",
+					"request": {
+						"method": "OPTIONS",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:51044/api/projects",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"projects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Single Project Options",
+					"request": {
+						"method": "OPTIONS",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -1248,6 +1366,65 @@
 								"api",
 								"departments",
 								"66667227-3501-4afe-7063-08d8bf53b90c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Employee Options",
+					"request": {
+						"method": "OPTIONS",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:51044/api/departments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"departments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Single Project Options",
+					"request": {
+						"method": "OPTIONS",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:51044/api/departments/d28888e9-1111-1111-a401-e38cb54f9b36",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"departments",
+								"d28888e9-1111-1111-a401-e38cb54f9b36"
 							]
 						}
 					},

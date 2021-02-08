@@ -162,5 +162,18 @@ namespace EmployeeApi.Controllers
             return NoContent();
         }
 
+        [HttpOptions()]
+        public IActionResult GetDepartmentsOptions()
+        {
+            Response.Headers.Add("Allow", "Get, Options");
+            return Ok();
+        }
+
+        [HttpOptions("{departmentId}")]
+        public IActionResult GetDepartmentOptions()
+        {
+            Response.Headers.Add("Allow", "Get, Options, Put, Patch, Delete");
+            return Ok();
+        }
     }
 }
