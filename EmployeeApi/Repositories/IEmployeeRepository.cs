@@ -1,4 +1,5 @@
 ﻿using EmployeeApi.Entities;
+using EmployeeApi.Helper;
 using EmployeeApi.ResourceParameters;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace EmployeeApi.Repositories
     {
         Task<IEnumerable<Employee>> GetEmployees();
 
-        Task <IEnumerable<Employee>> GetEmployees(EmployeeResourceParameter employeeResourceParameter);
+        Task <PagedList<Employee>> GetEmployees(EmployeeResourceParameter employeeResourceParameter);
 
         Task<IEnumerable<Employee>> GetEmployees(IEnumerable<Guid> Ids);
 

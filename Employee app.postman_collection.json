@@ -29,6 +29,66 @@
 					"response": []
 				},
 				{
+					"name": "Get Employees page 1 size 3",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/employees?pageNumber=1&PageSize=3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"employees"
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": "1"
+								},
+								{
+									"key": "PageSize",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Employees page 1 with very big size",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/employees?pageNumber=1&PageSize=1500",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"employees"
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": "1"
+								},
+								{
+									"key": "PageSize",
+									"value": "1500"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Head request Employees",
 					"request": {
 						"method": "HEAD",
@@ -43,6 +103,36 @@
 							"path": [
 								"api",
 								"employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Employees Filtered by jobTitle and page size = 1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/employees?JobTitle=football player&pageSize=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"employees"
+							],
+							"query": [
+								{
+									"key": "JobTitle",
+									"value": "football player"
+								},
+								{
+									"key": "pageSize",
+									"value": "1"
+								}
 							]
 						}
 					},
@@ -747,6 +837,92 @@
 					"response": []
 				},
 				{
+					"name": "Search in Projects",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/projects?SearchQuery=web application",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"projects"
+							],
+							"query": [
+								{
+									"key": "SearchQuery",
+									"value": "web application"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Projects Page 1 Page size 1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/projects?pageNumber=1&PageSize=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"projects"
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": "1"
+								},
+								{
+									"key": "PageSize",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Projects Page 2 size 5",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/projects?pageNumber=5&PageSize=5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"projects"
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": "5"
+								},
+								{
+									"key": "PageSize",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Head Projects",
 					"request": {
 						"method": "HEAD",
@@ -1034,6 +1210,118 @@
 					"response": []
 				},
 				{
+					"name": "Search in departments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/departments?SearchQuery=Turkey",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"departments"
+							],
+							"query": [
+								{
+									"key": "SearchQuery",
+									"value": "Turkey"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Departments page 2 page size 5",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/departments?pageNumber=2&PageSize=5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"departments"
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": "2"
+								},
+								{
+									"key": "PageSize",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Departments page size 25",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/departments?pageNumber=1&PageSize=25",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"departments"
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": "1"
+								},
+								{
+									"key": "PageSize",
+									"value": "25"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Filter Departments by Headquarter",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/departments?Headquarter=London, UK",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"departments"
+							],
+							"query": [
+								{
+									"key": "Headquarter",
+									"value": "London, UK"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Head request Departments",
 					"request": {
 						"method": "HEAD",
@@ -1166,7 +1454,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"departmentName\": \"Marketing\",\r\n    \"headquarter\": \"paris\"\r\n}",
+							"raw": "{\r\n    \"departmentName\": \"Marketing\",\r\n    \"headquarter\": \"paris - france\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

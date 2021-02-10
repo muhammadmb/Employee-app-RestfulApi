@@ -1,5 +1,6 @@
 ﻿using EmployeeApi.Contexts;
 using EmployeeApi.Entities;
+using EmployeeApi.Helper;
 using EmployeeApi.ResourceParameters;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,55 +21,49 @@ namespace EmployeeApi.Repositories
         }
 
 
-        public async Task<IEnumerable<Employee>> GetEmployees(EmployeeResourceParameter employeeResourceParameter)
+        public async Task<PagedList<Employee>> GetEmployees(EmployeeResourceParameter employeeResourceParameter)
         {
 
             if (employeeResourceParameter == null)
                 throw new ArgumentNullException(nameof(employeeResourceParameter));
 
 
-            if (string.IsNullOrEmpty(employeeResourceParameter.JobTitle)
-                && string.IsNullOrEmpty(employeeResourceParameter.department)
-                && string.IsNullOrEmpty(employeeResourceParameter.SearchQuery))
-            {
-                return await GetEmployees();
-            }
-
-            var collection = _context.Employees as IQueryable<Employee>;
+            var collection = _context.Employees
+                    .Include(e => e.department)
+                    .Include(e => e.employeeProjects)
+                    .ThenInclude(ep => ep.project)
+                    as IQueryable<Employee>;
 
             if (!string.IsNullOrEmpty(employeeResourceParameter.JobTitle))
             {
                 employeeResourceParameter.JobTitle = employeeResourceParameter.JobTitle.Trim();
 
-                collection = collection
-                    .Where(e => e.JobTitle == employeeResourceParameter.JobTitle)
-                    .Include(e => e.department)
-                    .Include(e => e.employeeProjects).ThenInclude(ep => ep.project);
+                collection = 
+                    collection.Where(e => e.JobTitle == employeeResourceParameter.JobTitle);
             }
 
             if (!string.IsNullOrEmpty(employeeResourceParameter.department))
             {
                 employeeResourceParameter.department = employeeResourceParameter.department.Trim();
 
-                    collection = collection
-                    .Where(e => e.department.DepartmentName == employeeResourceParameter.department)
-                    .Include(e => e.department)
-                    .Include(e => e.employeeProjects).ThenInclude(ep => ep.project);
+                collection = 
+                    collection.Where(e => e.department.DepartmentName == employeeResourceParameter.department);
             }
 
             if (!string.IsNullOrEmpty(employeeResourceParameter.SearchQuery))
             {
                 employeeResourceParameter.SearchQuery = employeeResourceParameter.SearchQuery.Trim();
 
-                collection = 
+                collection =
                     collection.Where(e => e.FirstName.Contains(employeeResourceParameter.SearchQuery)
                     || e.LastName.Contains(employeeResourceParameter.SearchQuery)
-                    || e.JobTitle.Contains(employeeResourceParameter.SearchQuery))
-                    .Include(e => e.department)
-                    .Include(e => e.employeeProjects).ThenInclude(ep => ep.project);
+                    || e.JobTitle.Contains(employeeResourceParameter.SearchQuery));
             }
 
-                return await collection.ToListAsync();
+            return PagedList<Employee>.Create(
+                collection,
+                employeeResourceParameter.PageNumber,
+                employeeResourceParameter.PageSize);
 
         }
 

@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
 using EmployeeApi.Entities;
 using EmployeeApi.Filters;
+using EmployeeApi.Helper;
 using EmployeeApi.Models;
 using EmployeeApi.Repositories;
+using EmployeeApi.ResourceParameters;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace EmployeeApi.Controllers
@@ -26,17 +29,38 @@ namespace EmployeeApi.Controllers
                 throw new ArgumentNullException(nameof(mapper));
         }
 
-        [HttpGet]
+        [HttpGet(Name ="GetDepartments")]
         [HttpHead]
 
-        public async Task<IActionResult> GetDepartments()
+        public async Task<IActionResult> GetDepartments(
+            [FromQuery]DepartmentResourceParameter departmentResourceParameter)
         {
-            var departmentsFromDb = await _departmentRepository.getDepartments();
+            var departmentsFromDb = await _departmentRepository.getDepartments(departmentResourceParameter);
 
             var departments = _mapper.Map<IEnumerable<DepartmentDto>>(departmentsFromDb);
 
+            var PreviousPageLink = departmentsFromDb.HasPrevious ?
+                CreateDepartmentResourceUri(departmentResourceParameter, ResourceUriType.PreviousPage) : null;
+
+            var NextPageLink = departmentsFromDb.HasNext ?
+                CreateDepartmentResourceUri(departmentResourceParameter, ResourceUriType.NextPage) : null;
+
+            var PaginationMetadata = new
+            {
+                departmentsFromDb.CurrentPage,
+                departmentsFromDb.PageSize,
+                departmentsFromDb.TotalPages,
+                departmentsFromDb.TotalCount,
+                PreviousPageLink,
+                NextPageLink
+            };
+
+            Response.Headers.Add("Pagination",
+                JsonSerializer.Serialize(PaginationMetadata));
+
             return Ok(departments);
         }
+
 
         [HttpGet("{departmentId}", Name = "GetDepartment")]
         [HttpHead("{departmentId}")]
@@ -174,6 +198,42 @@ namespace EmployeeApi.Controllers
         {
             Response.Headers.Add("Allow", "Get, Options, Put, Patch, Delete");
             return Ok();
+        }
+
+        private object CreateDepartmentResourceUri(
+            DepartmentResourceParameter departmentResourceParameter, 
+            ResourceUriType resourceUriType)
+        {
+            switch (resourceUriType)
+            {
+                case ResourceUriType.PreviousPage:
+                    return Url.Link("GetDepartments",
+                        new
+                        {
+                            PageNumber = departmentResourceParameter.PageNumber - 1,
+                            departmentResourceParameter.PageSize,
+                            departmentResourceParameter.SearchQuery,
+                            departmentResourceParameter.Headquarter
+                        });
+                case ResourceUriType.NextPage:
+                    return Url.Link("GetDepartments",
+                        new
+                        {
+                            PageNumber = departmentResourceParameter.PageNumber + 1,
+                            departmentResourceParameter.PageSize,
+                            departmentResourceParameter.SearchQuery,
+                            departmentResourceParameter.Headquarter
+                        });
+                default:
+                    return Url.Link("GetDepartments",
+                        new
+                        {
+                            departmentResourceParameter.PageNumber,
+                            departmentResourceParameter.PageSize,
+                            departmentResourceParameter.SearchQuery,
+                            departmentResourceParameter.Headquarter
+                        });
+            }
         }
     }
 }

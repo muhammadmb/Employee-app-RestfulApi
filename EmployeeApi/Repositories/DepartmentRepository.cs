@@ -1,8 +1,9 @@
 ﻿using EmployeeApi.Contexts;
 using EmployeeApi.Entities;
+using EmployeeApi.Helper;
+using EmployeeApi.ResourceParameters;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,11 +18,34 @@ namespace EmployeeApi.Repositories
             _context = context ??
                 throw new ArgumentNullException(nameof(context));
         }
-        public async Task<IEnumerable<Department>> getDepartments()
+        public async Task<PagedList<Department>> getDepartments(DepartmentResourceParameter Parameter)
         {
-            return await _context.Departments
+            var collection =
+                _context.Departments
                 .Include(d => d.Employees)
-                .ToListAsync();
+                as IQueryable<Department>;
+
+            if (!string.IsNullOrEmpty(Parameter.SearchQuery))
+            {
+                Parameter.SearchQuery = Parameter.SearchQuery.Trim();
+
+                collection =
+                    collection.Where(d => d.DepartmentName.Contains(Parameter.SearchQuery)
+                    || d.Headquarter.Contains(Parameter.SearchQuery));
+            }
+
+            if (!string.IsNullOrEmpty(Parameter.Headquarter))
+            {
+                Parameter.Headquarter = Parameter.Headquarter.Trim();
+
+                collection =
+                    collection.Where(d => d.Headquarter == Parameter.Headquarter);
+            }
+
+            return PagedList<Department>.Create(
+                collection, 
+                Parameter.PageNumber, 
+                Parameter.PageSize);
         }
 
         public async Task<Department> getDepartment(Guid departmentId)

@@ -1,8 +1,9 @@
 ﻿using EmployeeApi.Contexts;
 using EmployeeApi.Entities;
+using EmployeeApi.Helper;
+using EmployeeApi.ResourceParameters;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,12 +19,25 @@ namespace EmployeeApi.Repositories
                 throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<IEnumerable<Project>> GetProjects()
+        public async Task<PagedList<Project>> GetProjects(ProjectResourcesParameters Parameters)
         {
-            return await _context.Projects
+            var Collection = _context.Projects
                 .Include(p => p.employeeProjects)
                 .ThenInclude(ep => ep.employee)
-                .ToListAsync();
+                as IQueryable<Project>;
+
+            if (!string.IsNullOrWhiteSpace(Parameters.SearchQuery))
+            {
+                Parameters.SearchQuery = Parameters.SearchQuery.Trim();
+
+                Collection =
+                    Collection.Where(p => p.ProjectName.Contains(Parameters.SearchQuery));
+            }
+
+            return PagedList<Project>.Create(
+                Collection,
+                Parameters.PageNumber,
+                Parameters.PageSize);
         }
 
         public async Task<Project> GetProject(Guid projectId)

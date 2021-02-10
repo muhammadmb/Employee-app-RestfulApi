@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
 using EmployeeApi.Entities;
 using EmployeeApi.Filters;
+using EmployeeApi.Helper;
 using EmployeeApi.Models;
 using EmployeeApi.Repositories;
+using EmployeeApi.ResourceParameters;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace EmployeeApi.Controllers
@@ -27,12 +30,32 @@ namespace EmployeeApi.Controllers
                 throw new ArgumentNullException(nameof(mapper));
         }
 
-        [HttpGet]
+        [HttpGet(Name = "GetProjects")]
         [HttpHead]
-        public async Task<IActionResult> getProjects()
+        public async Task<IActionResult> getProjects(
+            [FromQuery] ProjectResourcesParameters projectResourcesParameters)
         {
-            var projectsFromDb = await _projectRepository.GetProjects();
+            var projectsFromDb = await _projectRepository.GetProjects(projectResourcesParameters);
             var projects = _mapper.Map<IEnumerable<ProjectDto>>(projectsFromDb);
+
+            var PreviousPageLink = projectsFromDb.HasPrevious ?
+                CreateEmployeeResourceUri(projectResourcesParameters, ResourceUriType.PreviousPage) : null;
+
+            var NextPageLink = projectsFromDb.HasNext ?
+                CreateEmployeeResourceUri(projectResourcesParameters, ResourceUriType.NextPage) : null;
+
+            var PaginationMetadata = new
+            {
+                projectsFromDb.CurrentPage,
+                projectsFromDb.PageSize,
+                projectsFromDb.TotalCount,
+                projectsFromDb.TotalPages,
+                PreviousPageLink,
+                NextPageLink
+            };
+
+            Response.Headers.Add("Pagination",
+                JsonSerializer.Serialize(PaginationMetadata));
 
             return Ok(projects);
         }
@@ -110,7 +133,7 @@ namespace EmployeeApi.Controllers
 
             var projectfromRepo = await _projectRepository.GetProject(projectId);
 
-            if(projectfromRepo == null)
+            if (projectfromRepo == null)
             {
                 return NotFound();
             }
@@ -130,7 +153,7 @@ namespace EmployeeApi.Controllers
 
             var projectfromRepo = await _projectRepository.GetProject(projectId);
 
-            if(projectfromRepo == null)
+            if (projectfromRepo == null)
             {
                 return NotFound();
             }
@@ -169,7 +192,7 @@ namespace EmployeeApi.Controllers
         [HttpOptions()]
         public IActionResult GetProjectsOptions()
         {
-            Response.Headers.Add("Allow","Get, Options, Post");
+            Response.Headers.Add("Allow", "Get, Options, Post");
             return Ok();
         }
 
@@ -178,6 +201,39 @@ namespace EmployeeApi.Controllers
         {
             Response.Headers.Add("Allow", "Get, Options, Put, Patch, Delete");
             return Ok();
+        }
+
+        private string CreateEmployeeResourceUri(
+           ProjectResourcesParameters projectResourcesParameters,
+           ResourceUriType resourceUriType)
+        {
+            switch (resourceUriType)
+            {
+                case ResourceUriType.PreviousPage:
+                    return Url.Link("GetProjects",
+                        new
+                        {
+                            PageNumber = projectResourcesParameters.PageNumber - 1,
+                            projectResourcesParameters.PageSize,
+                            projectResourcesParameters.SearchQuery
+                        });
+                case ResourceUriType.NextPage:
+                    return Url.Link("GetProjects",
+                        new
+                        {
+                            PageNumber = projectResourcesParameters.PageNumber + 1,
+                            projectResourcesParameters.PageSize,
+                            projectResourcesParameters.SearchQuery
+                        });
+                default:
+                    return Url.Link("GetProjects",
+                        new
+                        {
+                            projectResourcesParameters.PageNumber,
+                            projectResourcesParameters.PageSize,
+                            projectResourcesParameters.SearchQuery
+                        });
+            }
         }
     }
 }

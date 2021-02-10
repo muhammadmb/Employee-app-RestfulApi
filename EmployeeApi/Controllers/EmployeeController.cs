@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace EmployeeApi.Controllers
@@ -41,7 +42,7 @@ namespace EmployeeApi.Controllers
                     throw new ArgumentNullException(nameof(mapper));
         }
 
-        [HttpGet]
+        [HttpGet(Name = "GetEmployees")]
         [EmployeesFilter]
         [HttpHead]
 
@@ -49,6 +50,25 @@ namespace EmployeeApi.Controllers
             [FromQuery] EmployeeResourceParameter employeeResourceParameter)
         {
             var employees = await _employeeRepository.GetEmployees(employeeResourceParameter);
+
+            var PreviousPageLink = employees.HasPrevious ?
+                CreateEmployeeResourceUri(employeeResourceParameter, ResourceUriType.PreviousPage) : null;
+
+            var NextPageLink = employees.HasNext ?
+                CreateEmployeeResourceUri(employeeResourceParameter, ResourceUriType.NextPage) : null;
+
+            var PaginationMetadata = new
+            {
+                employees.CurrentPage,
+                employees.PageSize,
+                employees.TotalCount,
+                employees.TotalPages,
+                PreviousPageLink,
+                NextPageLink
+            };
+
+            Response.Headers.Add("Pagination",
+                JsonSerializer.Serialize(PaginationMetadata));
 
             return Ok(employees);
         }
@@ -66,7 +86,7 @@ namespace EmployeeApi.Controllers
 
             var Employee = await _employeeRepository.GetEmployee(employeeId);
 
-            if(Employee == null)
+            if (Employee == null)
             {
                 return NotFound();
             }
@@ -75,7 +95,6 @@ namespace EmployeeApi.Controllers
         }
 
         [HttpPost("Department/{departmentId}/project/{projectIds}")]
-
         public async Task<IActionResult> CreateEmployeeToDepartment(
             Guid departmentId,
             [ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<Guid> projectIds,
@@ -105,7 +124,7 @@ namespace EmployeeApi.Controllers
 
             return CreatedAtRoute(
                 "GetEmployee",
-                new {employeeId = CreatedEmployee.EmployeeId},
+                new { employeeId = CreatedEmployee.EmployeeId },
                 employeeCreation
                 );
         }
@@ -125,10 +144,10 @@ namespace EmployeeApi.Controllers
             {
                 throw new ArgumentNullException(nameof(employeeCreation));
             }
-           
+
             var employeeFromRepo = await _employeeRepository.GetEmployee(employeeId);
 
-            if(employeeFromRepo == null)
+            if (employeeFromRepo == null)
             {
                 return NotFound();
             }
@@ -175,7 +194,7 @@ namespace EmployeeApi.Controllers
 
             return NoContent();
         }
-        
+
         [HttpDelete("{employeeId}")]
         public IActionResult DeleteEmployee(Guid employeeId)
         {
@@ -201,6 +220,47 @@ namespace EmployeeApi.Controllers
         {
             Response.Headers.Add("Allow", "Get, Options, Put, Patch, Delete");
             return Ok();
+        }
+
+
+        private string CreateEmployeeResourceUri(
+            EmployeeResourceParameter employeeResourceParameter,
+            ResourceUriType resourceUriType)
+        {
+            switch (resourceUriType)
+            {
+                case ResourceUriType.PreviousPage:
+                    return Url.Link("GetEmployees",
+                        new
+                        {
+                            PageNumber = employeeResourceParameter.PageNumber - 1,
+                            employeeResourceParameter.PageSize,
+                            employeeResourceParameter.SearchQuery,
+                            employeeResourceParameter.JobTitle,
+                            employeeResourceParameter.department
+                        });
+                case ResourceUriType.NextPage:
+                    return Url.Link("GetEmployees",
+                        new
+                        {
+                            PageNumber = employeeResourceParameter.PageNumber + 1,
+                            employeeResourceParameter.PageSize,
+                            employeeResourceParameter.SearchQuery,
+                            employeeResourceParameter.JobTitle,
+                            employeeResourceParameter.department
+                        });
+                default:
+                    return Url.Link("GetEmployees",
+                        new
+                        {
+                            employeeResourceParameter.PageNumber,
+                            employeeResourceParameter.PageSize,
+                            employeeResourceParameter.SearchQuery,
+                            employeeResourceParameter.JobTitle,
+                            employeeResourceParameter.department
+                        });
+            }
+
         }
     }
 }
