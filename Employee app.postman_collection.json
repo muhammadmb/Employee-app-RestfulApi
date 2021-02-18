@@ -29,6 +29,58 @@
 					"response": []
 				},
 				{
+					"name": "Get Employees ordering by Age",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/employees?OrderBy=age",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"employees"
+							],
+							"query": [
+								{
+									"key": "OrderBy",
+									"value": "age"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get specific data for employees",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/employees?Fields=name,age,projects,salary",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"employees"
+							],
+							"query": [
+								{
+									"key": "Fields",
+									"value": "name,age,projects,salary"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get Employees page 1 size 3",
 					"request": {
 						"method": "GET",
@@ -377,6 +429,33 @@
 								"api",
 								"employees",
 								"59d0f4a7-02ef-4594-208e-08d8bc22ee27"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get specific Data for an employee",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/employees/59d0f4a7-02ef-4594-208e-08d8bc22ee27?fields=Name,phoneNumber,department",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"employees",
+								"59d0f4a7-02ef-4594-208e-08d8bc22ee27"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "Name,phoneNumber,department"
+								}
 							]
 						}
 					},
@@ -837,6 +916,110 @@
 					"response": []
 				},
 				{
+					"name": "Get specific data in Projects",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/projects?Fields=projectName,employees",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"projects"
+							],
+							"query": [
+								{
+									"key": "Fields",
+									"value": "projectName,employees"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Projects Orderd by Budget",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/projects?orderBy=Budget",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"projects"
+							],
+							"query": [
+								{
+									"key": "orderBy",
+									"value": "Budget"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Projects Orderd by Profit",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/projects?orderBy=profit",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"projects"
+							],
+							"query": [
+								{
+									"key": "orderBy",
+									"value": "profit"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Projects  Orderd by employees number",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/projects?orderBy=employees",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"projects"
+							],
+							"query": [
+								{
+									"key": "orderBy",
+									"value": "employees"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Search in Projects",
 					"request": {
 						"method": "GET",
@@ -1204,6 +1387,58 @@
 							"path": [
 								"api",
 								"departments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get specific Data from Employees",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/departments?Fields=headquarter,employees",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"departments"
+							],
+							"query": [
+								{
+									"key": "Fields",
+									"value": "headquarter,employees"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Departments orderd by employees number",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51044/api/departments?orderBy=employees",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51044",
+							"path": [
+								"api",
+								"departments"
+							],
+							"query": [
+								{
+									"key": "orderBy",
+									"value": "employees"
+								}
 							]
 						}
 					},

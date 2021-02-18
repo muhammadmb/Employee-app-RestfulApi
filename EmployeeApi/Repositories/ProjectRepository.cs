@@ -34,6 +34,32 @@ namespace EmployeeApi.Repositories
                     Collection.Where(p => p.ProjectName.Contains(Parameters.SearchQuery));
             }
 
+            if (!string.IsNullOrEmpty(Parameters.OrderBy))
+            {
+                Parameters.OrderBy = Parameters.OrderBy.Trim();
+
+                if (Parameters.OrderBy.ToLowerInvariant() == "projectName")
+                {
+                    Collection =
+                        Collection.OrderBy(p => p.ProjectName);
+                }
+                if (Parameters.OrderBy.ToLowerInvariant() == "employees")
+                {
+                    Collection =
+                        Collection.OrderBy(p => p.employeeProjects.Count());
+                }
+                if (Parameters.OrderBy.ToLowerInvariant() == "budget")
+                {
+                    Collection =
+                        Collection.OrderBy(p => p.Budget);
+                }
+                if (Parameters.OrderBy.ToLowerInvariant() == "profit")
+                {
+                    Collection =
+                        Collection.OrderBy(p => p.Profit);
+                }
+            }
+
             return PagedList<Project>.Create(
                 Collection,
                 Parameters.PageNumber,

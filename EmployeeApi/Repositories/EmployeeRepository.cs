@@ -60,6 +60,23 @@ namespace EmployeeApi.Repositories
                     || e.JobTitle.Contains(employeeResourceParameter.SearchQuery));
             }
 
+            if (!string.IsNullOrWhiteSpace(employeeResourceParameter.OrderBy))
+            {
+                employeeResourceParameter.OrderBy = employeeResourceParameter.OrderBy.Trim();
+
+                if(employeeResourceParameter.OrderBy.ToLowerInvariant() == "name")
+                {
+                    collection
+                        = collection.OrderBy(e => e.FirstName).ThenBy(e => e.LastName);
+                }
+
+                if (employeeResourceParameter.OrderBy.ToLowerInvariant() == "age")
+                {
+                    collection
+                        = collection.OrderBy(e => e.DateOfBirth);
+                }
+            }
+
             return PagedList<Employee>.Create(
                 collection,
                 employeeResourceParameter.PageNumber,

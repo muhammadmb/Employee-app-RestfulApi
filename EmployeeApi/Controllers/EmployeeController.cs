@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using EmployeeApi.Entities;
-using EmployeeApi.Filters;
 using EmployeeApi.Helper;
 using EmployeeApi.ModelBinders;
 using EmployeeApi.Models;
 using EmployeeApi.Repositories;
 using EmployeeApi.ResourceParameters;
+using EmployeeApi.Services;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -25,11 +25,13 @@ namespace EmployeeApi.Controllers
         private readonly IMapper _mapper;
         private readonly IProjectRepository _projectRepository;
         private readonly IDepartmentRepository _departmentRepository;
+        private readonly IPropertyCheckerService _propertyCheckerService;
 
         public EmployeeController(
             IEmployeeRepository employeeRepsitory,
             IProjectRepository projectRepository,
             IDepartmentRepository departmentRepository,
+            IPropertyCheckerService propertyCheckerService,
             IMapper mapper)
         {
             _employeeRepository = employeeRepsitory ??
@@ -38,18 +40,26 @@ namespace EmployeeApi.Controllers
                 throw new ArgumentNullException(nameof(projectRepository));
             _departmentRepository = departmentRepository ??
                 throw new ArgumentNullException(nameof(departmentRepository));
+            _propertyCheckerService = propertyCheckerService ??
+                throw new ArgumentNullException(nameof(propertyCheckerService));
             _mapper = mapper ??
                     throw new ArgumentNullException(nameof(mapper));
         }
 
         [HttpGet(Name = "GetEmployees")]
-        [EmployeesFilter]
         [HttpHead]
 
-        public async Task<IActionResult> getEmployees(
+        public async Task<IActionResult> GetEmployees(
             [FromQuery] EmployeeResourceParameter employeeResourceParameter)
         {
+            if (!_propertyCheckerService.TypeHasProperties<EmployeeDto>(employeeResourceParameter.Fields) ||
+                !_propertyCheckerService.TypeHasProperties<EmployeeDto>(employeeResourceParameter.OrderBy))
+            {
+                return NotFound();
+            }
+
             var employees = await _employeeRepository.GetEmployees(employeeResourceParameter);
+            var shapedEmployeesData = _mapper.Map<IEnumerable<EmployeeDto>>(employees).ShapeData(employeeResourceParameter.Fields);
 
             var PreviousPageLink = employees.HasPrevious ?
                 CreateEmployeeResourceUri(employeeResourceParameter, ResourceUriType.PreviousPage) : null;
@@ -70,15 +80,19 @@ namespace EmployeeApi.Controllers
             Response.Headers.Add("Pagination",
                 JsonSerializer.Serialize(PaginationMetadata));
 
-            return Ok(employees);
+            return Ok(shapedEmployeesData);
         }
 
         [HttpGet("{employeeId}", Name = "GetEmployee")]
-        [EmployeeFilter]
         [HttpHead("{employeeId}")]
 
-        public async Task<IActionResult> getEmployee(Guid employeeId)
+        public async Task<IActionResult> GetEmployee(Guid employeeId, string fields)
         {
+            if (!_propertyCheckerService.TypeHasProperties<EmployeeDto>(fields))
+            {
+                return NotFound();
+            }
+
             if (employeeId == null)
             {
                 throw new ArgumentNullException(nameof(employeeId));
@@ -91,7 +105,9 @@ namespace EmployeeApi.Controllers
                 return NotFound();
             }
 
-            return Ok(Employee);
+            var shapedEmployeeData = _mapper.Map<EmployeeDto>(Employee).shapeData(fields);
+
+            return Ok(shapedEmployeeData);
         }
 
         [HttpPost("Department/{departmentId}/project/{projectIds}")]
@@ -233,6 +249,8 @@ namespace EmployeeApi.Controllers
                     return Url.Link("GetEmployees",
                         new
                         {
+                            Fields = employeeResourceParameter.Fields,
+                            OrderBy = employeeResourceParameter.OrderBy,
                             PageNumber = employeeResourceParameter.PageNumber - 1,
                             employeeResourceParameter.PageSize,
                             employeeResourceParameter.SearchQuery,
@@ -243,6 +261,8 @@ namespace EmployeeApi.Controllers
                     return Url.Link("GetEmployees",
                         new
                         {
+                            Fields = employeeResourceParameter.Fields,
+                            OrderBy = employeeResourceParameter.OrderBy,
                             PageNumber = employeeResourceParameter.PageNumber + 1,
                             employeeResourceParameter.PageSize,
                             employeeResourceParameter.SearchQuery,
@@ -253,6 +273,8 @@ namespace EmployeeApi.Controllers
                     return Url.Link("GetEmployees",
                         new
                         {
+                            Fields = employeeResourceParameter.Fields,
+                            OrderBy = employeeResourceParameter.OrderBy,
                             employeeResourceParameter.PageNumber,
                             employeeResourceParameter.PageSize,
                             employeeResourceParameter.SearchQuery,

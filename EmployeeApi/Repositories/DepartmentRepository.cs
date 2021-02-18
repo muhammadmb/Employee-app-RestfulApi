@@ -42,9 +42,25 @@ namespace EmployeeApi.Repositories
                     collection.Where(d => d.Headquarter == Parameter.Headquarter);
             }
 
+            if (!string.IsNullOrEmpty(Parameter.OrderBy))
+            {
+                Parameter.OrderBy = Parameter.OrderBy.Trim();
+
+                if (Parameter.OrderBy.ToLowerInvariant() == "departmentName")
+                {
+                    collection =
+                        collection.OrderBy(d => d.DepartmentName);
+                }
+                if (Parameter.OrderBy.ToLowerInvariant() == "employees")
+                {
+                    collection =
+                        collection.OrderBy(d => d.Employees.Count());
+                }
+            }
+
             return PagedList<Department>.Create(
-                collection, 
-                Parameter.PageNumber, 
+                collection,
+                Parameter.PageNumber,
                 Parameter.PageSize);
         }
 

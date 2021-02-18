@@ -5,6 +5,7 @@ using EmployeeApi.Helper;
 using EmployeeApi.Models;
 using EmployeeApi.Repositories;
 using EmployeeApi.ResourceParameters;
+using EmployeeApi.Services;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -19,25 +20,37 @@ namespace EmployeeApi.Controllers
     public class DepartmentController : ControllerBase
     {
         private readonly IDepartmentRepository _departmentRepository;
+        private readonly IPropertyCheckerService _propertyCheckerService;
         private readonly IMapper _mapper;
 
-        public DepartmentController(IDepartmentRepository departmentRepository, IMapper mapper)
+        public DepartmentController(IDepartmentRepository departmentRepository,
+            IPropertyCheckerService propertyCheckerService,
+            IMapper mapper)
         {
             _departmentRepository = departmentRepository ??
                 throw new ArgumentNullException(nameof(departmentRepository));
+            _propertyCheckerService = propertyCheckerService ??
+                throw new ArgumentNullException(nameof(propertyCheckerService));
             _mapper = mapper ??
                 throw new ArgumentNullException(nameof(mapper));
         }
 
-        [HttpGet(Name ="GetDepartments")]
+        [HttpGet(Name = "GetDepartments")]
         [HttpHead]
 
         public async Task<IActionResult> GetDepartments(
-            [FromQuery]DepartmentResourceParameter departmentResourceParameter)
+            [FromQuery] DepartmentResourceParameter departmentResourceParameter)
         {
+
+            if (!_propertyCheckerService.TypeHasProperties<DepartmentDto>(departmentResourceParameter.Fields) ||
+                !_propertyCheckerService.TypeHasProperties<DepartmentDto>(departmentResourceParameter.OrderBy))
+            {
+                return NotFound();
+            }
+
             var departmentsFromDb = await _departmentRepository.getDepartments(departmentResourceParameter);
 
-            var departments = _mapper.Map<IEnumerable<DepartmentDto>>(departmentsFromDb);
+            var departments = _mapper.Map<IEnumerable<DepartmentDto>>(departmentsFromDb).ShapeData(departmentResourceParameter.Fields);
 
             var PreviousPageLink = departmentsFromDb.HasPrevious ?
                 CreateDepartmentResourceUri(departmentResourceParameter, ResourceUriType.PreviousPage) : null;
@@ -65,7 +78,7 @@ namespace EmployeeApi.Controllers
         [HttpGet("{departmentId}", Name = "GetDepartment")]
         [HttpHead("{departmentId}")]
 
-        public async Task<IActionResult> GetDepartment(Guid departmentId)
+        public async Task<IActionResult> GetDepartment(Guid departmentId, string fields)
         {
 
             var departmentFromDb = await _departmentRepository.getDepartment(departmentId);
@@ -75,7 +88,7 @@ namespace EmployeeApi.Controllers
                 return NotFound();
             }
 
-            var department = _mapper.Map<DepartmentDto>(departmentFromDb);
+            var department = _mapper.Map<DepartmentDto>(departmentFromDb).shapeData(fields);
 
             return Ok(department);
         }
@@ -86,9 +99,9 @@ namespace EmployeeApi.Controllers
 
         public async Task<IActionResult> getEmployeesForDepartment(Guid departmentId)
         {
-            var departmentFromRepo =  await _departmentRepository.getDepartment(departmentId);
+            var departmentFromRepo = await _departmentRepository.getDepartment(departmentId);
 
-            if(departmentFromRepo == null)
+            if (departmentFromRepo == null)
             {
                 return NotFound();
             }
@@ -129,7 +142,7 @@ namespace EmployeeApi.Controllers
 
             var departmentFromRepo = await _departmentRepository.getDepartment(departmentId);
 
-            if(departmentFromRepo == null)
+            if (departmentFromRepo == null)
             {
                 return NotFound();
             }
@@ -201,7 +214,7 @@ namespace EmployeeApi.Controllers
         }
 
         private object CreateDepartmentResourceUri(
-            DepartmentResourceParameter departmentResourceParameter, 
+            DepartmentResourceParameter departmentResourceParameter,
             ResourceUriType resourceUriType)
         {
             switch (resourceUriType)
@@ -210,6 +223,8 @@ namespace EmployeeApi.Controllers
                     return Url.Link("GetDepartments",
                         new
                         {
+                            OrderBy = departmentResourceParameter.OrderBy,
+                            Fields = departmentResourceParameter.Fields,
                             PageNumber = departmentResourceParameter.PageNumber - 1,
                             departmentResourceParameter.PageSize,
                             departmentResourceParameter.SearchQuery,
@@ -219,6 +234,8 @@ namespace EmployeeApi.Controllers
                     return Url.Link("GetDepartments",
                         new
                         {
+                            OrderBy = departmentResourceParameter.OrderBy,
+                            Fields = departmentResourceParameter.Fields,
                             PageNumber = departmentResourceParameter.PageNumber + 1,
                             departmentResourceParameter.PageSize,
                             departmentResourceParameter.SearchQuery,
@@ -228,6 +245,8 @@ namespace EmployeeApi.Controllers
                     return Url.Link("GetDepartments",
                         new
                         {
+                            OrderBy = departmentResourceParameter.OrderBy,
+                            Fields = departmentResourceParameter.Fields,
                             departmentResourceParameter.PageNumber,
                             departmentResourceParameter.PageSize,
                             departmentResourceParameter.SearchQuery,

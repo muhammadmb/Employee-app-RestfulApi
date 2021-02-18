@@ -5,6 +5,7 @@ using EmployeeApi.Helper;
 using EmployeeApi.Models;
 using EmployeeApi.Repositories;
 using EmployeeApi.ResourceParameters;
+using EmployeeApi.Services;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -20,12 +21,17 @@ namespace EmployeeApi.Controllers
     public class ProjectController : ControllerBase
     {
         private readonly IProjectRepository _projectRepository;
+        private readonly IPropertyCheckerService _propertyCheckerService;
         private readonly IMapper _mapper;
 
-        public ProjectController(IProjectRepository projectRepository, IMapper mapper)
+        public ProjectController(IProjectRepository projectRepository,
+            IPropertyCheckerService propertyCheckerService,
+            IMapper mapper)
         {
             _projectRepository = projectRepository ??
                 throw new ArgumentNullException(nameof(projectRepository));
+            _propertyCheckerService = propertyCheckerService ??
+                throw new ArgumentNullException(nameof(propertyCheckerService));
             _mapper = mapper ??
                 throw new ArgumentNullException(nameof(mapper));
         }
@@ -35,8 +41,15 @@ namespace EmployeeApi.Controllers
         public async Task<IActionResult> getProjects(
             [FromQuery] ProjectResourcesParameters projectResourcesParameters)
         {
+
+            if (!_propertyCheckerService.TypeHasProperties<ProjectDto>(projectResourcesParameters.Fields) ||
+                !_propertyCheckerService.TypeHasProperties<ProjectDto>(projectResourcesParameters.OrderBy))
+            {
+                return NotFound();
+            }
+
             var projectsFromDb = await _projectRepository.GetProjects(projectResourcesParameters);
-            var projects = _mapper.Map<IEnumerable<ProjectDto>>(projectsFromDb);
+            var projects = _mapper.Map<IEnumerable<ProjectDto>>(projectsFromDb).ShapeData(projectResourcesParameters.Fields);
 
             var PreviousPageLink = projectsFromDb.HasPrevious ?
                 CreateEmployeeResourceUri(projectResourcesParameters, ResourceUriType.PreviousPage) : null;
@@ -63,7 +76,7 @@ namespace EmployeeApi.Controllers
         [HttpGet("{projectId}", Name = "GetProject")]
         [HttpHead("{projectId}")]
 
-        public async Task<IActionResult> getProject(Guid projectId)
+        public async Task<IActionResult> getProject(Guid projectId, string fields)
         {
             var projectFromDb = await _projectRepository.GetProject(projectId);
 
@@ -72,7 +85,7 @@ namespace EmployeeApi.Controllers
                 return NotFound();
             }
 
-            var project = _mapper.Map<ProjectDto>(projectFromDb);
+            var project = _mapper.Map<ProjectDto>(projectFromDb).shapeData(fields);
 
             return Ok(project);
         }
@@ -213,6 +226,8 @@ namespace EmployeeApi.Controllers
                     return Url.Link("GetProjects",
                         new
                         {
+                            OrderBy = projectResourcesParameters.OrderBy,
+                            Fields = projectResourcesParameters.Fields,
                             PageNumber = projectResourcesParameters.PageNumber - 1,
                             projectResourcesParameters.PageSize,
                             projectResourcesParameters.SearchQuery
@@ -221,6 +236,8 @@ namespace EmployeeApi.Controllers
                     return Url.Link("GetProjects",
                         new
                         {
+                            OrderBy = projectResourcesParameters.OrderBy,
+                            Fields = projectResourcesParameters.Fields,
                             PageNumber = projectResourcesParameters.PageNumber + 1,
                             projectResourcesParameters.PageSize,
                             projectResourcesParameters.SearchQuery
@@ -229,6 +246,8 @@ namespace EmployeeApi.Controllers
                     return Url.Link("GetProjects",
                         new
                         {
+                            OrderBy = projectResourcesParameters.OrderBy,
+                            Fields = projectResourcesParameters.Fields,
                             projectResourcesParameters.PageNumber,
                             projectResourcesParameters.PageSize,
                             projectResourcesParameters.SearchQuery

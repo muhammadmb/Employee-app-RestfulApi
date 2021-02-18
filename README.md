@@ -14,5 +14,5 @@ Fully function RESTful API built with ASP.NET Core 3.1 to perform (Create, Updat
 
 ## To test 
 
-import these requests to postman from Employee app.postman_collection file
+open EmployeeApi.sln by Microsoft VS and run it, then import these requests to postman from Employee app.postman_collection file
 

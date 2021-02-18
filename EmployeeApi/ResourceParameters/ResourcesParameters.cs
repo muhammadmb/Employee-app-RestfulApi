@@ -14,5 +14,8 @@
             set => _PageSize = (value > maxPageSize) ? maxPageSize : value;
         }
         public string SearchQuery { get; set; }
+
+        public string Fields { get; set; }
+        public virtual string OrderBy { get; set; } = "Name";
     }
 }

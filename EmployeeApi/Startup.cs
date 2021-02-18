@@ -1,6 +1,7 @@
 using AutoMapper;
 using EmployeeApi.Contexts;
 using EmployeeApi.Repositories;
+using EmployeeApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -90,6 +91,8 @@ namespace EmployeeApi
             });
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            services.AddTransient<IPropertyCheckerService, PropertyCheckerService>();
 
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IStatisticsRepository, StatisticsRepository>();
